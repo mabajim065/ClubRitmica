@@ -15,7 +15,7 @@ public class Gimnasta {
     private String nivel;
 
     @ManyToOne
-    @JoinColumn(name = "club_id")
+    @JoinColumn(name = "club_id" , nullable = false )
     private Club club;
 
     public Long getIdGimnasta() {
