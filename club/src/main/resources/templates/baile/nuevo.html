@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Nuevo Baile</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div th:replace="fragments/menu :: menu"></div>
+
+<div class="container mt-4">
+    <h2>Nuevo Baile</h2>
+    <form th:action="@{/baile/guardar}" th:object="${baile}" method="post">
+        <div class="mb-3">
+            <label class="form-label">Nombre</label>
+            <input type="text" class="form-control" th:field="*{nombre}" required>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Puntuación</label>
+            <select class="form-select" th:field="*{puntuacion}" required>
+                <option th:each="p : ${puntuaciones}" th:value="${p}" th:text="${p.valor}"></option>
+            </select>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Aparatos</label>
+            <select class="form-select" th:field="*{aparatos}" multiple required>
+                <option th:each="a : ${aparatos}" th:value="${a}" th:text="${a.nombre}"></option>
+            </select>
+        </div>
+        <button type="submit" class="btn btn-success">Guardar</button>
+        <a

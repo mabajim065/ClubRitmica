@@ -1,12 +1,15 @@
 package com.club.club.repository;
 
 import java.util.List;
+import java.util.Optional;
 
+import org.jspecify.annotations.Nullable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import com.club.club.model.Club;
 import com.club.club.model.Gimnasta;
 
 @Repository
@@ -32,4 +35,8 @@ public interface GimnastaRepository extends JpaRepository<Gimnasta, Integer> {
     //esta consulta busca gimnastas que pertenezcan a clubs de una ciudad en concreto
     @Query("SELECT g FROM Gimnasta g WHERE g.club.ciudad = :ciudad")
     List<Gimnasta> buscarPorCiudadClub(@Param("ciudad") String ciudad);
+    Optional<Club> findById(Long id);
+    @Nullable
+    Object findByClubId(Long id);
+    void deleteById(Long id);
 }

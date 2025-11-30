@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Lista de Clubes</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div th:replace="fragments/menu :: menu"></div>
+
+    <div class="container mt-4">
+        <h2>Lista de Clubes</h2>
+        <a class="btn btn-primary mb-3" href="/club/nuevo">Nuevo Club</a>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Ciudad</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="club : ${clubes}">
+                    <td th:text="${club.id}"></td>
+                    <td th:text="${club.nombre}"></td>
+                    <td th:text="${club.ciudad}"></td>
+                    <td>
+                        <a th:href="@{/club/editar/{id}(id=${club.id})}" class="btn btn-warning btn-sm">Editar</a>
+                        <a th:href="@{/club/borrar/{id}(id=${club.id})}" class="btn btn-danger btn-sm">Borrar</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

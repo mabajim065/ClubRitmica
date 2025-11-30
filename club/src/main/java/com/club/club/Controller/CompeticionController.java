@@ -2,12 +2,7 @@ package com.club.club.Controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-
+import org.springframework.web.bind.annotation.*;
 import com.club.club.model.Competicion;
 import com.club.club.repository.CompeticionRepository;
 
@@ -44,7 +39,7 @@ public class CompeticionController {
 
     // Editar competición
     @GetMapping("/editar/{id}")
-    public String editarCompeticion(@PathVariable Integer id, Model model) {
+    public String editarCompeticion(@PathVariable Long id, Model model) {
         Competicion competicion = competicionRepository.findById(id).orElseThrow();
         model.addAttribute("competicion", competicion);
         return "competicion-form";
@@ -52,7 +47,7 @@ public class CompeticionController {
 
     // Borrar competición
     @GetMapping("/borrar/{id}")
-    public String borrarCompeticion(@PathVariable Integer id) {
+    public String borrarCompeticion(@PathVariable Long id) {
         competicionRepository.deleteById(id);
         return "redirect:/competiciones";
     }

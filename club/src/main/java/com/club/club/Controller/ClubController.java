@@ -1,63 +1,85 @@
 package com.club.club.Controller;
 
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import com.club.club.model.Club;
 import com.club.club.repository.ClubRepository;
+import com.club.club.repository.GimnastaRepository;
 
 @Controller
-@RequestMapping("/clubs")
+@RequestMapping("/club")
 public class ClubController {
 
-    private final ClubRepository clubRepository;
+    @Autowired
+    private ClubRepository clubRepo;
 
-    public ClubController(ClubRepository clubRepository) {
-        this.clubRepository = clubRepository;
+    @Autowired
+    private GimnastaRepository gimnastaRepo;
+
+    // LISTADO PAGINADO
+    @GetMapping("/list")
+    public String list(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "5") int size,
+            Model model) {
+
+        Page<Club> clubes = clubRepo.findAll(PageRequest.of(page, size));
+        model.addAttribute("clubes", clubes);
+        model.addAttribute("currentPage", page);
+
+        return "club/lista";
     }
 
-    // Listar todos los clubs
-    @GetMapping
-    public String listarClubs(Model model) {
-        model.addAttribute("clubs", clubRepository.findAll());
-        return "club-list"; // nombre del HTML
-    }
-
-    // Mostrar formulario nuevo club
+    // NUEVO
     @GetMapping("/nuevo")
-    public String nuevoClubForm(Model model) {
+    public String nuevo(Model model) {
         model.addAttribute("club", new Club());
-        return "club-form";
+        return "club/nuevo";
     }
 
-    // Guardar club (nuevo o editado)
-    @PostMapping("/guardar")
-    public String guardarClub(@ModelAttribute Club club) {
-        clubRepository.save(club);
-        return "redirect:/clubs";
+    // CREAR
+    @PostMapping("/crear")
+    public String crear(@ModelAttribute Club club) {
+        clubRepo.save(club);
+        return "redirect:/club/list";
     }
 
-    // Editar club
+    // EDITAR
     @GetMapping("/editar/{id}")
-    public String editarClub(@PathVariable Integer id, Model model) {
-        Club club = clubRepository.findById(id).orElseThrow();
-        model.addAttribute("club", club);
-        return "club-form";
+    public String editar(@PathVariable Long id, Model model) {
+        model.addAttribute("club", clubRepo.findById(id).orElse(null));
+        return "club/editar";
     }
 
-    // Borrar club
-    @GetMapping("/borrar/{id}")
-    public String borrarClub(@PathVariable Integer id) {
-        clubRepository.deleteById(id);
-        return "redirect:/clubs";
+    // MODIFICAR
+    @PostMapping("/modificar")
+    public String modificar(@ModelAttribute Club club) {
+        clubRepo.save(club);
+        return "redirect:/club/list";
     }
 
-    // Ver detalles
+    // ELIMINAR
+    @GetMapping("/eliminar/{id}")
+    public String eliminar(@PathVariable Long id) {
+        clubRepo.deleteById(id);
+        return "redirect:/club/list";
+    }
+
+    // DETALLE ESPECIAL
     @GetMapping("/detalle/{id}")
-    public String detalleClub(@PathVariable Integer id, Model model) {
-        Club club = clubRepository.findById(id).orElseThrow();
+    public String detalle(@PathVariable Long id, Model model) {
+
+        Club club = clubRepo.findById(id).orElse(null);
         model.addAttribute("club", club);
-        return "club-detalle";
+
+        model.addAttribute("gimnastas", gimnastaRepo.findByClubId(id));
+
+        return "club/detalle";
     }
 }

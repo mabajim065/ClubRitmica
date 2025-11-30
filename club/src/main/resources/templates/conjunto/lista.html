@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Lista de Conjuntos</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div th:replace="fragments/menu :: menu"></div>
+
+<div class="container mt-4">
+    <h2>Lista de Conjuntos</h2>
+    <a class="btn btn-primary mb-3" href="/conjuntos/nuevo">Nuevo Conjunto</a>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Entrenadores</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="conjunto : ${conjuntos}">
+                <td th:text="${conjunto.id}"></td>
+                <td th:text="${conjunto.nombre}"></td>
+                <td>
+                    <span th:each="ent : ${conjunto.entrenadores}" th:text="${ent.nombre} + ' ' + ${ent.apellidos} + ' | '"></span>
+                </td>
+                <td>
+                    <a th:href="@{/conjuntos/editar/{id}(id=${conjunto.id})}" class="btn btn-warning btn-sm">Editar</a>
+                    <a th:href="@{/conjuntos/borrar/{id}(id=${conjunto.id})}" class="btn btn-danger btn-sm">Borrar</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

@@ -1,68 +1,87 @@
 package com.club.club.Controller;
 
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import com.club.club.model.Club;
 import com.club.club.model.Gimnasta;
+import com.club.club.repository.CategoriaRepository;
 import com.club.club.repository.ClubRepository;
 import com.club.club.repository.GimnastaRepository;
 
 @Controller
-@RequestMapping("/gimnastas")
+@RequestMapping("/gimnasta")
 public class GimnastaController {
 
-    private final GimnastaRepository gimnastaRepository;
-    private final ClubRepository clubRepository;
+    @Autowired private GimnastaRepository gimnastaRepo;
+    @Autowired private ClubRepository clubRepo;
+    @Autowired private CategoriaRepository categoriaRepo;
 
-    public GimnastaController(GimnastaRepository gimnastaRepository, ClubRepository clubRepository) {
-        this.gimnastaRepository = gimnastaRepository;
-        this.clubRepository = clubRepository;
+    // LISTA PAGINADA
+    @GetMapping("/list")
+    public String list(@RequestParam(defaultValue = "0") int page,
+                       @RequestParam(defaultValue = "5") int size,
+                       Model model) {
+
+        Page<Gimnasta> gimnastas = gimnastaRepo.findAll(PageRequest.of(page, size));
+        model.addAttribute("gimnastas", gimnastas);
+        model.addAttribute("currentPage", page);
+
+        return "gimnasta/lista";
     }
 
-    // Listar todos los gimnastas
-    @GetMapping
-    public String listarGimnastas(Model model) {
-        model.addAttribute("gimnastas", gimnastaRepository.findAll());
-        return "gimnasta-list";
-    }
-
-    // Formulario nuevo gimnasta
+    // NUEVO
     @GetMapping("/nuevo")
-    public String nuevoGimnastaForm(Model model) {
+    public String nuevo(Model model) {
         model.addAttribute("gimnasta", new Gimnasta());
-        model.addAttribute("clubs", clubRepository.findAll()); // para seleccionar club
-        return "gimnasta-form";
+        model.addAttribute("clubes", clubRepo.findAll());
+        model.addAttribute("categorias", categoriaRepo.findAll());
+
+        return "gimnasta/nuevo";
     }
 
-    // Guardar gimnasta
-    @PostMapping("/guardar")
-    public String guardarGimnasta(@ModelAttribute Gimnasta gimnasta) {
-        gimnastaRepository.save(gimnasta);
-        return "redirect:/gimnastas";
+    // CREAR
+    @PostMapping("/crear")
+    public String crear(@ModelAttribute Gimnasta gimnasta) {
+        gimnastaRepo.save(gimnasta);
+        return "redirect:/gimnasta/list";
     }
 
-    // Editar gimnasta
+    // EDITAR
     @GetMapping("/editar/{id}")
-    public String editarGimnasta(@PathVariable Integer id, Model model) {
-        Gimnasta gimnasta = gimnastaRepository.findById(id).orElseThrow();
-        model.addAttribute("gimnasta", gimnasta);
-        model.addAttribute("clubs", clubRepository.findAll());
-        return "gimnasta-form";
+    public String editar(@PathVariable Long id, Model model) {
+        model.addAttribute("gimnasta", gimnastaRepo.findById(id).orElse(null));
+        model.addAttribute("clubes", clubRepo.findAll());
+        model.addAttribute("categorias", categoriaRepo.findAll());
+        return "gimnasta/editar";
     }
 
-    // Borrar gimnasta
-    @GetMapping("/borrar/{id}")
-    public String borrarGimnasta(@PathVariable Integer id) {
-        gimnastaRepository.deleteById(id);
-        return "redirect:/gimnastas";
+    // MODIFICAR
+    @PostMapping("/modificar")
+    public String modificar(@ModelAttribute Gimnasta gimnasta) {
+        gimnastaRepo.save(gimnasta);
+        return "redirect:/gimnasta/list";
     }
 
-    // Ver detalles
+    // ELIMINAR
+    @GetMapping("/eliminar/{id}")
+    public String eliminar(@PathVariable Long id) {
+        gimnastaRepo.deleteById(id);
+        return "redirect:/gimnasta/list";
+    }
+
+    // DETALLE
     @GetMapping("/detalle/{id}")
-    public String detalleGimnasta(@PathVariable Integer id, Model model) {
-        Gimnasta gimnasta = gimnastaRepository.findById(id).orElseThrow();
-        model.addAttribute("gimnasta", gimnasta);
-        return "gimnasta-detalle";
+    public String detalle(@PathVariable Long id, Model model) {
+
+        Club g = gimnastaRepo.findById(id).orElse(null);
+        model.addAttribute("gimnasta", g);
+
+        return "gimnasta/detalle";
     }
 }

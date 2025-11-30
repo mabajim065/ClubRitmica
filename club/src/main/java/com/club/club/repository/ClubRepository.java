@@ -1,6 +1,7 @@
 package com.club.club.repository;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -42,4 +43,6 @@ public interface ClubRepository extends JpaRepository<Club, Integer> {
     //este metodo busca clubs en una ciudad concreta que tengan mas de un numero minimo de socios.
     @Query("SELECT c FROM Club c WHERE c.ciudad = :ciudad AND c.numSocios > :minSocios")
     List<Club> buscarPorCiudadYSocios(@Param("ciudad") String ciudad, @Param("minSocios") int minSocios);
+    Optional<Club> findById(Long id);
+    void deleteById(Long id);
 }

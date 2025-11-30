@@ -44,7 +44,7 @@ public class EntrenadorController {
 
     // Editar entrenador
     @GetMapping("/editar/{id}")
-    public String editarEntrenador(@PathVariable Integer id, Model model) {
+    public String editarEntrenador(@PathVariable Long id, Model model) {
         Entrenador entrenador = entrenadorRepository.findById(id).orElseThrow();
         model.addAttribute("entrenador", entrenador);
         model.addAttribute("clubs", clubRepository.findAll());
@@ -53,7 +53,7 @@ public class EntrenadorController {
 
     // Borrar entrenador
     @GetMapping("/borrar/{id}")
-    public String borrarEntrenador(@PathVariable Integer id) {
+    public String borrarEntrenador(@PathVariable Long id) {
         entrenadorRepository.deleteById(id);
         return "redirect:/entrenadores";
     }
