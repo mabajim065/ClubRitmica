@@ -7,10 +7,4 @@ import java.util.List;
 
 public interface CompeticionRepository extends JpaRepository<Competicion, Long> {
 
-    List<Competicion> findByNombre(String nombre);
-
-    void deleteByNombre(String nombre);
-
-    @Query("SELECT c FROM Competicion c WHERE c.nombre LIKE %:nombre%")
-    List<Competicion> buscarPorNombre(String nombre);
 }

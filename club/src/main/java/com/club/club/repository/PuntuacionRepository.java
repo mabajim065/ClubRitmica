@@ -7,10 +7,4 @@ import java.util.List;
 
 public interface PuntuacionRepository extends JpaRepository<Puntuacion, Long> {
 
-    List<Puntuacion> findByValor(Double valor);
-
-    void deleteByValor(Double valor);
-
-    @Query("SELECT p FROM Puntuacion p WHERE p.valor >= :valor")
-    List<Puntuacion> buscarPorValorMayorIgual(Double valor);
 }

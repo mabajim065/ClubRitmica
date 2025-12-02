@@ -19,8 +19,10 @@ public class Conjunto {
     private String categoria;
 
     // Relación 1:N con Gimnasta
-    @OneToMany(mappedBy = "conjunto", cascade = CascadeType.ALL)
-    private List<Gimnasta> gimnastas;
+    /*
+     * @OneToMany(mappedBy = "conjunto", cascade = CascadeType.ALL)
+     * private List<Gimnasta> gimnastas;
+     */
 
     // Getters y setters
     public Integer getIdConjunto() {
@@ -47,11 +49,13 @@ public class Conjunto {
         this.categoria = categoria;
     }
 
-    public List<Gimnasta> getGimnastas() {
-        return gimnastas;
-    }
-
-    public void setGimnastas(List<Gimnasta> gimnastas) {
-        this.gimnastas = gimnastas;
-    }
+    /*
+     * public List<Gimnasta> getGimnastas() {
+     * return gimnastas;
+     * }
+     * 
+     * public void setGimnastas(List<Gimnasta> gimnastas) {
+     * this.gimnastas = gimnastas;
+     * }
+     */
 }

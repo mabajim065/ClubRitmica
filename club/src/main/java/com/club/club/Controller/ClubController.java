@@ -1,6 +1,5 @@
 package com.club.club.Controller;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -23,7 +22,7 @@ public class ClubController {
     private GimnastaRepository gimnastaRepo;
 
     // LISTADO PAGINADO
-    @GetMapping("/list")
+    @GetMapping
     public String list(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "5") int size,

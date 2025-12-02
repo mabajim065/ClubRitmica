@@ -7,10 +7,4 @@ import java.util.List;
 
 public interface AparatoRepository extends JpaRepository<Aparato, Long> {
 
-    List<Aparato> findByNombre(String nombre);
-
-    void deleteByNombre(String nombre);
-
-    @Query("SELECT a FROM Aparato a WHERE a.nombre LIKE %:nombre%")
-    List<Aparato> buscarPorNombre(String nombre);
 }

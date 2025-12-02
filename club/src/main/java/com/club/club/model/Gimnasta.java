@@ -1,61 +1,33 @@
 package com.club.club.model;
 
 import jakarta.persistence.*;
+import lombok.Data;
+
 import java.time.LocalDate;
 
+@Data
 @Entity
 public class Gimnasta {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long idGimnasta;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
 
     private String nombre;
+    private int edad;
     private LocalDate fechaNacimiento;
     private String nivel;
+    private String especialidad;
 
     @ManyToOne
-    @JoinColumn(name = "club_id" , nullable = false )
+    @JoinColumn(name = "club_id", nullable = false)
     private Club club;
 
-    public Long getIdGimnasta() {
-        return idGimnasta;
-    }
+    /*
+     * @ManyToOne
+     * 
+     * @JoinColumn(name = "categoria_id", nullable = false)
+     * private Categoria categoria;
+     */
 
-    public void setIdGimnasta(Long idGimnasta) {
-        this.idGimnasta = idGimnasta;
-    }
-
-    public String getNombre() {
-        return nombre;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-
-    public LocalDate getFechaNacimiento() {
-        return fechaNacimiento;
-    }
-
-    public void setFechaNacimiento(LocalDate fechaNacimiento) {
-        this.fechaNacimiento = fechaNacimiento;
-    }
-
-    public String getNivel() {
-        return nivel;
-    }
-
-    public void setNivel(String nivel) {
-        this.nivel = nivel;
-    }
-
-    public Club getClub() {
-        return club;
-    }
-
-    public void setClub(Club club) {
-        this.club = club;
-    }
 }
-

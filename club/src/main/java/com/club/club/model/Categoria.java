@@ -19,8 +19,10 @@ public class Categoria {
     private String nombre;
 
     // Relación 1:N con Gimnasta
-    @OneToMany(mappedBy = "categoria", cascade = CascadeType.ALL)
-    private List<Gimnasta> gimnastas;
+    /*
+     * @OneToMany(mappedBy = "categoria", cascade = CascadeType.ALL)
+     * private List<Gimnasta> gimnastas;
+     */
 
     // Getters y setters
     public Integer getIdCategoria() {
@@ -47,11 +49,13 @@ public class Categoria {
         this.nombre = nombre;
     }
 
-    public List<Gimnasta> getGimnastas() {
-        return gimnastas;
-    }
-
-    public void setGimnastas(List<Gimnasta> gimnastas) {
-        this.gimnastas = gimnastas;
-    }
+    /*
+     * public List<Gimnasta> getGimnastas() {
+     * return gimnastas;
+     * }
+     * 
+     * public void setGimnastas(List<Gimnasta> gimnastas) {
+     * this.gimnastas = gimnastas;
+     * }
+     */
 }

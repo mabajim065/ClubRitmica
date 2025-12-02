@@ -7,10 +7,4 @@ import java.util.List;
 
 public interface BaileRepository extends JpaRepository<Baile, Long> {
 
-    List<Baile> findByNombre(String nombre);
-
-    void deleteByNombre(String nombre);
-
-    @Query("SELECT b FROM Baile b WHERE b.nombre LIKE %:nombre%")
-    List<Baile> buscarPorNombre(String nombre);
 }
