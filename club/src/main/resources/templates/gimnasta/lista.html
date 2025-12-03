@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Lista de Gimnastas</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body>
+    <div th:replace="fragments/menu :: menu"></div>
+
+    <div class="container mt-4">
+        <h2>Lista de Gimnastas <span class="badge bg-primary" th:text="'Total: ' + ${conteoTotal}"></span></h2>
+        <a class="btn btn-primary mb-3" th:href="@{/gimnasta/nuevo}">Nueva Gimnasta</a>
+
+        <div class="card p-3 mb-4 bg-light">
+            <h5>Consultas y Funciones Especiales</h5>
+            <div class="row g-2 mb-2">
+                <div class="col-md-6">
+                    <form th:action="@{/gimnasta/buscar-nombre-apellido}" method="get" class="d-flex">
+                        <input type="text" name="nombre" placeholder="Nombre (parcial)" class="form-control me-1"
+                            required>
+                        <input type="text" name="apellido" placeholder="Apellido (parcial)" class="form-control me-1"
+                            required>
+                        <button type="submit" class="btn btn-outline-dark">Buscar N/A</button>
+                    </form>
+                </div>
+
+                <div class="col-md-6">
+                    <form th:action="@{/gimnasta/buscar-nivel-o-esp}" method="get" class="d-flex">
+                        <input type="text" name="nivel" placeholder="Nivel" class="form-control me-1" required>
+                        <input type="text" name="especialidad" placeholder="Especialidad" class="form-control me-1"
+                            required>
+                        <button type="submit" class="btn btn-outline-dark">Buscar Nivel/Esp.</button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="row g-2">
+                <div class="col-md-4">
+                    <form th:action="@{/gimnasta/buscar-mayores}" method="get" class="d-flex">
+                        <input type="date" name="fecha" class="form-control me-1" required>
+                        <button type="submit" class="btn btn-outline-danger">Mayores de...</button>
+                    </form>
+                </div>
+
+                <div class="col-md-3">
+                    <a th:href="@{/gimnasta/ordenar}" class="btn btn-outline-secondary w-100">Ordenar
+                        (Nivel/Apellido)</a>
+                </div>
+
+                <div class="col-md-3">
+                    <a th:href="@{/gimnasta/buscar-mas-joven}" class="btn btn-outline-warning w-100">Ver Más Joven</a>
+                </div>
+
+                <div class="col-md-2">
+                    <form th:action="@{/gimnasta/eliminar-apellido}" method="post"
+                        onsubmit="return confirm('ATENCIÓN: ¿Estás seguro de ELIMINAR TODOS los gimnastas con este apellido?');"
+                        class="d-flex">
+                        <input type="text" name="apellido" placeholder="Apellido a borrar" class="form-control me-1"
+                            required>
+                        <button type="submit" class="btn btn-danger btn-sm">Borrar Apellido</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Apellidos</th>
+                    <th>Club</th>
+                    <th>Nivel</th>
+                    <th>Especialidad</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="gimnasta : ${gimnastas}">
+                    <td th:text="${gimnasta.id}"></td>
+                    <td th:text="${gimnasta.nombre}"></td>
+                    <td th:text="${gimnasta.apellidos}"></td>
+                    <td th:text="${gimnasta.club != null ? gimnasta.club.nombre : 'Sin Club'}"></td>
+                    <td th:text="${gimnasta.nivel}"></td>
+                    <td th:text="${gimnasta.especialidad}"></td>
+                    <td>
+                        <a th:href="@{/gimnasta/detalle/{id}(id=${gimnasta.id})}" class="btn btn-info btn-sm">Ver
+                            Detalles</a>
+                        <a th:href="@{/gimnasta/editar/{id}(id=${gimnasta.id})}"
+                            class="btn btn-warning btn-sm">Editar</a>
+
+                        <a th:href="@{/gimnasta/eliminar/{id}(id=${gimnasta.id})}" class="btn btn-danger btn-sm"
+                            onclick="return confirm('¿Estás seguro de eliminar a ' + this.closest('tr').querySelector('td:nth-child(2)').textContent + ' ' + this.closest('tr').querySelector('td:nth-child(3)').textContent + '?');">
+                            Borrar
+                        </a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div th:if="${gimnastas.empty}" class="alert alert-warning">
+            No se encontraron gimnastas con los criterios de búsqueda.
+            <a th:href="@{/gimnasta/list}">Ver lista completa</a>
+        </div>
+    </div>
+</body>
+
+</html>
