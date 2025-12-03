@@ -1,87 +1,62 @@
 package com.club.club.Controller;
 
-
+import com.club.club.model.Gimnasta;
+import com.club.club.repository.GimnastaRepository;
+import com.club.club.repository.ClubRepository; // Asegúrate de tener este repo creado
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
-import com.club.club.model.Club;
-import com.club.club.model.Gimnasta;
-import com.club.club.repository.CategoriaRepository;
-import com.club.club.repository.ClubRepository;
-import com.club.club.repository.GimnastaRepository;
 
 @Controller
 @RequestMapping("/gimnasta")
 public class GimnastaController {
 
-    @Autowired private GimnastaRepository gimnastaRepo;
-    @Autowired private ClubRepository clubRepo;
-    @Autowired private CategoriaRepository categoriaRepo;
+    @Autowired
+    private GimnastaRepository gimnastaRepo;
 
-    // LISTA PAGINADA
+    @Autowired
+    private ClubRepository clubRepo; // Necesario para el desplegable
+
+    @GetMapping("")
+    public String index() {
+        return "redirect:/gimnasta/list";
+    }
+
     @GetMapping("/list")
-    public String list(@RequestParam(defaultValue = "0") int page,
-                       @RequestParam(defaultValue = "5") int size,
-                       Model model) {
-
-        Page<Gimnasta> gimnastas = gimnastaRepo.findAll(PageRequest.of(page, size));
-        model.addAttribute("gimnastas", gimnastas);
-        model.addAttribute("currentPage", page);
-
+    public String list(Model model) {
+        model.addAttribute("gimnastas", gimnastaRepo.findAll());
         return "gimnasta/lista";
     }
 
-    // NUEVO
     @GetMapping("/nuevo")
     public String nuevo(Model model) {
         model.addAttribute("gimnasta", new Gimnasta());
-        model.addAttribute("clubes", clubRepo.findAll());
-        model.addAttribute("categorias", categoriaRepo.findAll());
-
+        // Pasamos la lista de clubs a la vista
+        model.addAttribute("clubs", clubRepo.findAll());
         return "gimnasta/nuevo";
     }
 
-    // CREAR
+    @GetMapping("/editar/{id}")
+    public String editar(@PathVariable Integer id, Model model) {
+        Gimnasta gimnasta = gimnastaRepo.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("ID inválido: " + id));
+        
+        model.addAttribute("gimnasta", gimnasta);
+        // Pasamos la lista de clubs a la vista también al editar
+        model.addAttribute("clubs", clubRepo.findAll());
+        return "gimnasta/editar";
+    }
+
     @PostMapping("/crear")
     public String crear(@ModelAttribute Gimnasta gimnasta) {
         gimnastaRepo.save(gimnasta);
         return "redirect:/gimnasta/list";
     }
 
-    // EDITAR
-    @GetMapping("/editar/{id}")
-    public String editar(@PathVariable Long id, Model model) {
-        model.addAttribute("gimnasta", gimnastaRepo.findById(id).orElse(null));
-        model.addAttribute("clubes", clubRepo.findAll());
-        model.addAttribute("categorias", categoriaRepo.findAll());
-        return "gimnasta/editar";
-    }
-
-    // MODIFICAR
-    @PostMapping("/modificar")
-    public String modificar(@ModelAttribute Gimnasta gimnasta) {
-        gimnastaRepo.save(gimnasta);
-        return "redirect:/gimnasta/list";
-    }
-
-    // ELIMINAR
     @GetMapping("/eliminar/{id}")
-    public String eliminar(@PathVariable Long id) {
+    public String eliminar(@PathVariable Integer id) {
         gimnastaRepo.deleteById(id);
         return "redirect:/gimnasta/list";
-    }
-
-    // DETALLE
-    @GetMapping("/detalle/{id}")
-    public String detalle(@PathVariable Long id, Model model) {
-
-        Club g = gimnastaRepo.findById(id).orElse(null);
-        model.addAttribute("gimnasta", g);
-
-        return "gimnasta/detalle";
     }
 }

@@ -10,25 +10,21 @@
 
 <div class="container mt-4">
     <h2>Nueva Puntuación</h2>
-    <form th:action="@{/puntuaciones/guardar}" th:object="${puntuacion}" method="post">
+    <form th:action="@{/puntuacion/crear}" th:object="${puntuacion}" method="post">
         <div class="mb-3">
-            <label class="form-label">Valor</label>
-            <input type="number" class="form-control" th:field="*{valor}" step="0.01" required>
+            <label class="form-label">Nota</label>
+            <input type="number" step="0.01" class="form-control" th:field="*{nota}" required>
         </div>
         <div class="mb-3">
-            <label class="form-label">Gimnasta</label>
-            <select class="form-select" th:field="*{gimnasta}" required>
-                <option th:each="g : ${gimnastas}" th:value="${g}" th:text="${g.nombre} + ' ' + ${g.apellidos}"></option>
-            </select>
+            <label class="form-label">Comentario</label>
+            <input type="text" class="form-control" th:field="*{comentario}">
         </div>
         <div class="mb-3">
-            <label class="form-label">Competición</label>
-            <select class="form-select" th:field="*{competicion}" required>
-                <option th:each="c : ${competiciones}" th:value="${c}" th:text="${c.nombre}"></option>
-            </select>
+            <label class="form-label">Fecha</label>
+            <input type="date" class="form-control" th:field="*{fecha}" required>
         </div>
         <button type="submit" class="btn btn-success">Guardar</button>
-        <a href="/puntuaciones" class="btn btn-secondary">Cancelar</a>
+        <a th:href="@{/puntuacion/list}" class="btn btn-secondary">Cancelar</a>
     </form>
 </div>
 </body>

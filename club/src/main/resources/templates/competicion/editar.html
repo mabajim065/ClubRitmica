@@ -9,7 +9,7 @@
 <div th:replace="fragments/menu :: menu"></div>
 <div class="container mt-4">
     <h2>Editar Competición</h2>
-    <form th:action="@{/competiciones/guardar}" th:object="${competicion}" method="post">
+    <form th:action="@{/competicion/crear}" th:object="${competicion}" method="post">
         <input type="hidden" th:field="*{id}">
         <div class="mb-3">
             <label class="form-label">Nombre</label>
@@ -19,8 +19,12 @@
             <label class="form-label">Fecha</label>
             <input type="date" class="form-control" th:field="*{fecha}" required>
         </div>
+        <div class="mb-3">
+            <label class="form-label">Lugar</label>
+            <input type="text" class="form-control" th:field="*{lugar}">
+        </div>
         <button type="submit" class="btn btn-success">Guardar Cambios</button>
-        <a href="/competiciones" class="btn btn-secondary">Cancelar</a>
+        <a th:href="@{/competicion/list}" class="btn btn-secondary">Cancelar</a>
     </form>
 </div>
 </body>

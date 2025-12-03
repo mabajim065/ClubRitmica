@@ -1,5 +1,6 @@
 package com.club.club.Controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -7,48 +8,46 @@ import com.club.club.model.Competicion;
 import com.club.club.repository.CompeticionRepository;
 
 @Controller
-@RequestMapping("/competiciones")
+@RequestMapping("/competicion")
 public class CompeticionController {
 
-    private final CompeticionRepository competicionRepository;
+    @Autowired
+    private CompeticionRepository competicionRepo;
 
-    public CompeticionController(CompeticionRepository competicionRepository) {
-        this.competicionRepository = competicionRepository;
+    @GetMapping("")
+    public String index() {
+        return "redirect:/competicion/list";
     }
 
-    // Listar competiciones
-    @GetMapping
-    public String listarCompeticiones(Model model) {
-        model.addAttribute("competiciones", competicionRepository.findAll());
-        return "competicion-list";
+    @GetMapping("/list")
+    public String list(Model model) {
+        model.addAttribute("competiciones", competicionRepo.findAll());
+        return "competicion/lista";
     }
 
-    // Formulario nueva competición
     @GetMapping("/nuevo")
-    public String nuevaCompeticionForm(Model model) {
+    public String nuevo(Model model) {
         model.addAttribute("competicion", new Competicion());
-        return "competicion-form";
+        return "competicion/nuevo";
     }
 
-    // Guardar competición
-    @PostMapping("/guardar")
-    public String guardarCompeticion(@ModelAttribute Competicion competicion) {
-        competicionRepository.save(competicion);
-        return "redirect:/competiciones";
-    }
-
-    // Editar competición
     @GetMapping("/editar/{id}")
-    public String editarCompeticion(@PathVariable Long id, Model model) {
-        Competicion competicion = competicionRepository.findById(id).orElseThrow();
+    public String editar(@PathVariable Integer id, Model model) {
+        Competicion competicion = competicionRepo.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("ID inválido: " + id));
         model.addAttribute("competicion", competicion);
-        return "competicion-form";
+        return "competicion/editar";
     }
 
-    // Borrar competición
-    @GetMapping("/borrar/{id}")
-    public String borrarCompeticion(@PathVariable Long id) {
-        competicionRepository.deleteById(id);
-        return "redirect:/competiciones";
+    @PostMapping("/crear")
+    public String crear(@ModelAttribute Competicion competicion) {
+        competicionRepo.save(competicion);
+        return "redirect:/competicion/list";
+    }
+
+    @GetMapping("/eliminar/{id}")
+    public String eliminar(@PathVariable Integer id) {
+        competicionRepo.deleteById(id);
+        return "redirect:/competicion/list";
     }
 }

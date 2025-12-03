@@ -7,16 +7,16 @@
 </head>
 <body>
 <div th:replace="fragments/menu :: menu"></div>
-
 <div class="container mt-4">
     <h2>Lista de Competiciones</h2>
-    <a class="btn btn-primary mb-3" href="/competiciones/nuevo">Nueva Competición</a>
+    <a class="btn btn-primary mb-3" th:href="@{/competicion/nuevo}">Nueva Competición</a>
     <table class="table table-striped">
         <thead>
             <tr>
                 <th>ID</th>
                 <th>Nombre</th>
                 <th>Fecha</th>
+                <th>Lugar</th>
                 <th>Acciones</th>
             </tr>
         </thead>
@@ -25,9 +25,10 @@
                 <td th:text="${comp.id}"></td>
                 <td th:text="${comp.nombre}"></td>
                 <td th:text="${comp.fecha}"></td>
+                <td th:text="${comp.lugar}"></td>
                 <td>
-                    <a th:href="@{/competiciones/editar/{id}(id=${comp.id})}" class="btn btn-warning btn-sm">Editar</a>
-                    <a th:href="@{/competiciones/borrar/{id}(id=${comp.id})}" class="btn btn-danger btn-sm">Borrar</a>
+                    <a th:href="@{/competicion/editar/{id}(id=${comp.id})}" class="btn btn-warning btn-sm">Editar</a>
+                    <a th:href="@{/competicion/eliminar/{id}(id=${comp.id})}" class="btn btn-danger btn-sm" onclick="return confirm('¿Eliminar?');">Borrar</a>
                 </td>
             </tr>
         </tbody>

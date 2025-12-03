@@ -1,59 +1,44 @@
 package com.club.club.repository;
 
-import java.util.List;
-import java.util.Optional;
-
+import com.club.club.model.Club;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import com.club.club.model.Club;
+import java.util.Date;
+import java.util.List;
 
 @Repository
-public interface ClubRepository extends JpaRepository<Club, Integer> {
-    /************************************************************************************************
-     * 1 2 métodos de búsqueda usando nomenclatura Spring Data (findBy...) usando
-     * varias condiciones
-     * 
-     * @param nombre
-     * @param ciudad
-     * @return
-     ************************************************************************************************/
-    // Estos son metodos de busqueda los cuales , en mi caso van a servir para
-    // encontrar clubs por su nombre que esten en una ciudad concreta.
+public interface ClubRepository extends JpaRepository<Club, Long> {
+
+    // --- REQUISITO 1: 2 métodos de búsqueda usando nomenclatura Spring Data ---
+    
+    // 1. Buscar por nombre (que contenga texto) y ciudad exacta
     List<Club> findByNombreContainingAndCiudad(String nombre, String ciudad);
 
-    // este metodo busca clubs fundados antes de una fecha concreta en una ciudad
-    // concreta tambien.
-    List<Club> findByFundacionBeforeAndCiudad(String fundacion, String ciudad);
+    // 2. Buscar clubs fundados antes de una fecha y de una ciudad concreta
+    List<Club> findByFundacionBeforeAndCiudad(Date fundacion, String ciudad);
 
-    /*************************************************************************************************
-     * 2 método con ordenación
-     ************************************************************************************************/
-    // en concreto este metodo ordenará los clubs por su nombre de forma ascendente.
+
+    // --- REQUISITO 2: 1 método con ordenación ---
+    
+    // Lista todos los clubs ordenados alfabéticamente
     List<Club> findAllByOrderByNombreAsc();
 
-    /*******************************************************************************************
-     * 3 método de conteo y agregación
-     **********************************************************************************************/
-    // el de conteo cuenta cuantos clubs hay en una ciudad concreta.
+
+    // --- REQUISITO 3: 1 método de conteo y 1 de agregación ---
+    
+    // Cuenta cuántos clubs hay en una ciudad
     long countByCiudad(String ciudad);
 
-    // el de agregacion encuentra el club mas antiguo.
+    // Encuentra el club más antiguo (el primero ordenado por fundación ascendente)
     Club findTopByOrderByFundacionAsc();
 
-    /*
-     * *****************************************************************************
-     * ****************
-     * 4 consulta personalizada con @Query (JPQL)
-     **********************************************************************************************/
-    // este metodo busca clubs en una ciudad concreta que tengan mas de un numero
-    // minimo de socios.
+
+    // --- REQUISITO 4: 1 consulta personalizada con @Query ---
+    
+    // Busca clubs de una ciudad con un mínimo de socios
     @Query("SELECT c FROM Club c WHERE c.ciudad = :ciudad AND c.numSocios > :minSocios")
     List<Club> buscarPorCiudadYSocios(@Param("ciudad") String ciudad, @Param("minSocios") int minSocios);
-
-    Optional<Club> findById(Long id);
-
-    void deleteById(Long id);
 }

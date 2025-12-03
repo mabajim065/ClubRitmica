@@ -10,22 +10,22 @@
 
 <div class="container mt-4">
     <h2>Nuevo Baile</h2>
-    <form th:action="@{/baile/guardar}" th:object="${baile}" method="post">
+    
+    <form th:action="@{/baile/crear}" th:object="${baile}" method="post">
+        
         <div class="mb-3">
             <label class="form-label">Nombre</label>
             <input type="text" class="form-control" th:field="*{nombre}" required>
         </div>
+
         <div class="mb-3">
-            <label class="form-label">Puntuación</label>
-            <select class="form-select" th:field="*{puntuacion}" required>
-                <option th:each="p : ${puntuaciones}" th:value="${p}" th:text="${p.valor}"></option>
-            </select>
+            <label class="form-label">Duración</label>
+            <input type="time" class="form-control" th:field="*{duracion}" required>
         </div>
-        <div class="mb-3">
-            <label class="form-label">Aparatos</label>
-            <select class="form-select" th:field="*{aparatos}" multiple required>
-                <option th:each="a : ${aparatos}" th:value="${a}" th:text="${a.nombre}"></option>
-            </select>
-        </div>
+
         <button type="submit" class="btn btn-success">Guardar</button>
-        <a
+        <a th:href="@{/baile/list}" class="btn btn-secondary">Cancelar</a>
+    </form>
+</div>
+</body>
+</html>

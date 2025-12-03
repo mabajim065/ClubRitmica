@@ -1,35 +1,43 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-
-<head>
-  <meta charset="UTF-8">
-  <title>Lista de Clubes</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
-</head>
+<html xmlns:th="http://www.thymeleaf.org/" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <body>
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <div class="container-fluid">
-      <a class="navbar-brand" href="/">Club Ritmica</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav">
-          <li class="nav-item"><a class="nav-link" href="/club">Clubes</a></li>
-          <li class="nav-item"><a class="nav-link" href="/gimnastas">Gimnastas</a></li>
-          <li class="nav-item"><a class="nav-link" href="/categoria">Categorías</a></li>
-          <li class="nav-item"><a class="nav-link" href="/conjuntos">Conjuntos</a></li>
-          <li class="nav-item"><a class="nav-link" href="/competencias">Competiciones</a></li>
-          <li class="nav-item"><a class="nav-link" href="/baile">Bailes</a></li>
-          <li class="nav-item"><a class="nav-link" href="/aparatos">Aparatos</a></li>
-          <li class="nav-item"><a class="nav-link" href="/puntuaciones">Puntuaciones</a></li>
-          <li class="nav-item"><a class="nav-link" href="/entrenadores">Entrenadores</a></li>
-        </ul>
-      </div>
-    </div>
-  </nav>
-</body>
+    <nav th:fragment="menu" class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/">Inicio</a>
 
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    </ul>
+                <div class="container">
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#topmenu">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+
+                    <div id="topmenu" class="collapse navbar-collapse">
+                        <ul class="navbar-nav me-auto">
+                            <li class="nav-item"><a class="nav-link" th:href="@{/club/list}">club</a></li>
+                            <li class="nav-item"><a class="nav-link" th:href="@{/gimnasta/list}">gimnastas </a></li>
+                            <li class="nav-item"><a class="nav-link" th:href="@{/aparatos}">aparatos </a></li>
+                            <li class="nav-item"><a class="nav-link" th:href="@{/baile}">baile </a></li>
+                            <li class="nav-item"><a class="nav-link" th:href="@{/categoria}">categoria </a></li>
+                            <li class="nav-item"><a class="nav-link" th:href="@{/competicion}">competicion </a></li>
+                            <li class="nav-item"><a class="nav-link" th:href="@{/conjunto}">conjunto </a></li>
+                            <li class="nav-item"><a class="nav-link" th:href="@{/entrenador}">entrenador </a></li>
+                            <li class="nav-item"><a class="nav-link" th:href="@{/puntuacion}">puntuacion </a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <span class="text-white me-3">
+                    <span>CLUB MARIA</span>
+                </span>
+            </div>
+        </div>
+    </nav>
+</body>
 </html>

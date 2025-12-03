@@ -16,7 +16,6 @@
             <tr>
                 <th>ID</th>
                 <th>Nombre</th>
-                <th>Bailes Asociados</th>
                 <th>Acciones</th>
             </tr>
         </thead>
@@ -24,9 +23,6 @@
             <tr th:each="aparato : ${aparatos}">
                 <td th:text="${aparato.id}"></td>
                 <td th:text="${aparato.nombre}"></td>
-                <td>
-                    <span th:each="baile : ${aparato.bailes}" th:text="${baile.nombre} + ' | '"></span>
-                </td>
                 <td>
                     <a th:href="@{/aparatos/editar/{id}(id=${aparato.id})}" class="btn btn-warning btn-sm">Editar</a>
                     <a th:href="@{/aparatos/borrar/{id}(id=${aparato.id})}" class="btn btn-danger btn-sm">Borrar</a>

@@ -10,14 +10,14 @@
 
 <div class="container mt-4">
     <h2>Lista de Entrenadores</h2>
-    <a class="btn btn-primary mb-3" href="/entrenadores/nuevo">Nuevo Entrenador</a>
+    <a class="btn btn-primary mb-3" th:href="@{/entrenador/nuevo}">Nuevo Entrenador</a>
     <table class="table table-striped">
         <thead>
             <tr>
                 <th>ID</th>
                 <th>Nombre</th>
-                <th>Apellidos</th>
-                <th>Conjuntos Asociados</th>
+                <th>Email</th>
+                <th>Teléfono</th>
                 <th>Acciones</th>
             </tr>
         </thead>
@@ -25,13 +25,11 @@
             <tr th:each="entrenador : ${entrenadores}">
                 <td th:text="${entrenador.id}"></td>
                 <td th:text="${entrenador.nombre}"></td>
-                <td th:text="${entrenador.apellidos}"></td>
+                <td th:text="${entrenador.email}"></td>
+                <td th:text="${entrenador.telefono}"></td>
                 <td>
-                    <span th:each="conj : ${entrenador.conjuntos}" th:text="${conj.nombre} + ' | '"></span>
-                </td>
-                <td>
-                    <a th:href="@{/entrenadores/editar/{id}(id=${entrenador.id})}" class="btn btn-warning btn-sm">Editar</a>
-                    <a th:href="@{/entrenadores/borrar/{id}(id=${entrenador.id})}" class="btn btn-danger btn-sm">Borrar</a>
+                    <a th:href="@{/entrenador/editar/{id}(id=${entrenador.id})}" class="btn btn-warning btn-sm">Editar</a>
+                    <a th:href="@{/entrenador/eliminar/{id}(id=${entrenador.id})}" class="btn btn-danger btn-sm" onclick="return confirm('¿Eliminar entrenador?');">Borrar</a>
                 </td>
             </tr>
         </tbody>

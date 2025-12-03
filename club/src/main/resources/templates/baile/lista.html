@@ -10,13 +10,14 @@
 
 <div class="container mt-4">
     <h2>Lista de Bailes</h2>
-    <a class="btn btn-primary mb-3" href="/baile/nuevo">Nuevo Baile</a>
+    <a class="btn btn-primary mb-3" th:href="@{/baile/nuevo}">Nuevo Baile</a>
+    
     <table class="table table-striped">
         <thead>
             <tr>
                 <th>ID</th>
                 <th>Nombre</th>
-                <th>Puntuación</th>
+                <th>Duración</th>
                 <th>Acciones</th>
             </tr>
         </thead>
@@ -24,10 +25,11 @@
             <tr th:each="baile : ${bailes}">
                 <td th:text="${baile.id}"></td>
                 <td th:text="${baile.nombre}"></td>
-                <td th:text="${baile.puntuacion.valor}"></td>
+                <td th:text="${baile.duracion}"></td>
                 <td>
                     <a th:href="@{/baile/editar/{id}(id=${baile.id})}" class="btn btn-warning btn-sm">Editar</a>
-                    <a th:href="@{/baile/borrar/{id}(id=${baile.id})}" class="btn btn-danger btn-sm">Borrar</a>
+                    <a th:href="@{/baile/eliminar/{id}(id=${baile.id})}" class="btn btn-danger btn-sm" 
+                       onclick="return confirm('¿Estás seguro de eliminar este baile?');">Borrar</a>
                 </td>
             </tr>
         </tbody>

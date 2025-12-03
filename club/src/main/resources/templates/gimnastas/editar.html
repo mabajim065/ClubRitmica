@@ -10,7 +10,7 @@
 
 <div class="container mt-4">
     <h2>Editar Gimnasta</h2>
-    <form th:action="@{/gimnastas/guardar}" th:object="${gimnasta}" method="post">
+    <form th:action="@{/gimnasta/modificar}" th:object="${gimnasta}" method="post">
         <input type="hidden" th:field="*{id}">
         <div class="mb-3">
             <label class="form-label">Nombre</label>
@@ -21,19 +21,36 @@
             <input type="text" class="form-control" th:field="*{apellidos}" required>
         </div>
         <div class="mb-3">
+            <label class="form-label">Edad</label>
+            <input type="number" class="form-control" th:field="*{edad}">
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Fecha de Nacimiento</label>
+            <input type="date" class="form-control" th:field="*{fechaNacimiento}">
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Nivel</label>
+            <input type="text" class="form-control" th:field="*{nivel}">
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Especialidad</label>
+            <input type="text" class="form-control" th:field="*{especialidad}">
+        </div>
+        
+        <div class="mb-3">
             <label class="form-label">Club</label>
             <select class="form-select" th:field="*{club}" required>
-                <option th:each="c : ${clubs}" th:value="${c}" th:text="${c.nombre}" th:selected="${c.id} == ${gimnasta.club.id}"></option>
+                <option th:each="c : ${clubs}" th:value="${c.id}" th:text="${c.nombre}" th:selected="${c.id} == ${gimnasta.club.id}"></option>
             </select>
         </div>
         <div class="mb-3">
             <label class="form-label">Categoría</label>
             <select class="form-select" th:field="*{categoria}" required>
-                <option th:each="cat : ${categorias}" th:value="${cat}" th:text="${cat.nombre}" th:selected="${cat.id} == ${gimnasta.categoria.id}"></option>
+                <option th:each="cat : ${categorias}" th:value="${cat.id}" th:text="${cat.nombre}" th:selected="${cat.id} == ${gimnasta.categoria.id}"></option>
             </select>
         </div>
         <button type="submit" class="btn btn-success">Guardar Cambios</button>
-        <a href="/gimnastas" class="btn btn-secondary">Cancelar</a>
+        <a href="/gimnasta/list" class="btn btn-secondary">Cancelar</a>
     </form>
 </div>
 </body>

@@ -10,18 +10,30 @@
 
 <div class="container mt-4">
     <h2>Editar Club</h2>
-    <form th:action="@{/club/guardar}" th:object="${club}" method="post">
+    <form th:action="@{/club/modificar}" th:object="${club}" method="post">
         <input type="hidden" th:field="*{id}">
         <div class="mb-3">
             <label class="form-label">Nombre</label>
             <input type="text" class="form-control" th:field="*{nombre}" required>
         </div>
         <div class="mb-3">
+            <label class="form-label">Dirección</label>
+            <input type="text" class="form-control" th:field="*{direccion}" required>
+        </div>
+        <div class="mb-3">
             <label class="form-label">Ciudad</label>
             <input type="text" class="form-control" th:field="*{ciudad}" required>
         </div>
+        <div class="mb-3">
+            <label class="form-label">Fecha de Fundación</label>
+            <input type="date" class="form-control" th:field="*{fundacion}" required>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Número de Socios</label>
+            <input type="number" class="form-control" th:field="*{numSocios}" required>
+        </div>
         <button type="submit" class="btn btn-success">Guardar Cambios</button>
-        <a href="/club" class="btn btn-secondary">Cancelar</a>
+        <a href="/club/list" class="btn btn-secondary">Cancelar</a>
     </form>
 </div>
 </body>

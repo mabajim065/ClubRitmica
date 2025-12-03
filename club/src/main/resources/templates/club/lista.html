@@ -8,7 +8,7 @@
 </head>
 
 <body>
-    <!--<div th:replace="~{menu :: menu}"></div>-->
+    <div th:replace="fragments/menu :: menu"></div> 
 
     <div class="container mt-4">
         <h2>Lista de Clubes</h2>
@@ -18,23 +18,43 @@
                 <tr>
                     <th>ID</th>
                     <th>Nombre</th>
+                    <th>Dirección</th> 
                     <th>Ciudad</th>
+                    <th>Fundación</th> 
+                    <th>Socios</th>    
                     <th>Acciones</th>
                 </tr>
             </thead>
             <tbody>
-                <tr th:each="club : ${clubes}">
+                <tr th:each="club : ${clubes.content}"> 
                     <td th:text="${club.id}"></td>
                     <td th:text="${club.nombre}"></td>
+                    <td th:text="${club.direccion}"></td>
                     <td th:text="${club.ciudad}"></td>
+                    <td th:text="${#dates.format(club.fundacion, 'dd/MM/yyyy')}"></td> 
+                    <td th:text="${club.numSocios}"></td>
                     <td>
+                        <a th:href="@{/club/detalle/{id}(id=${club.id})}" class="btn btn-info btn-sm">Ver Detalles</a>
+                        
                         <a th:href="@{/club/editar/{id}(id=${club.id})}" class="btn btn-warning btn-sm">Editar</a>
-                        <a th:href="@{/club/borrar/{id}(id=${club.id})}" class="btn btn-danger btn-sm">Borrar</a>
+                        <a th:href="@{/club/eliminar/{id}(id=${club.id})}" class="btn btn-danger btn-sm" onclick="return confirm('¿Estás seguro?');">Borrar</a>
                     </td>
                 </tr>
             </tbody>
         </table>
+        <nav th:if="${clubes.totalPages > 0}">
+            <ul class="pagination">
+                <li class="page-item" th:classappend="${currentPage == 0 ? 'disabled' : ''}">
+                    <a class="page-link" th:href="@{/club/list(page=${currentPage - 1}, size=${clubes.size})}">Anterior</a>
+                </li>
+                <li class="page-item" th:each="i : ${#numbers.sequence(0, clubes.totalPages - 1)}" th:classappend="${currentPage == i ? 'active' : ''}">
+                    <a class="page-link" th:href="@{/club/list(page=${i}, size=${clubes.size})}" th:text="${i + 1}"></a>
+                </li>
+                <li class="page-item" th:classappend="${currentPage == clubes.totalPages - 1 ? 'disabled' : ''}">
+                    <a class="page-link" th:href="@{/club/list(page=${currentPage + 1}, size=${clubes.size})}">Siguiente</a>
+                </li>
+            </ul>
+        </nav>
     </div>
 </body>
-
 </html>

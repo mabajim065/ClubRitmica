@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Detalles del Club</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container mt-4">
+    <h2 th:text="'Detalles del Club: ' + ${club.nombre}">Detalles del Club</h2>
+    
+    <div class="card p-4 mb-4">
+        <h3>Información Principal</h3>
+        <p><strong>ID:</strong> <span th:text="${club.id}"></span></p>
+        <p><strong>Nombre:</strong> <span th:text="${club.nombre}"></span></p>
+        <p><strong>Dirección:</strong> <span th:text="${club.direccion}"></span></p>
+        <p><strong>Ciudad:</strong> <span th:text="${club.ciudad}"></span></p>
+        <p><strong>Fundación:</strong> <span th:text="${#dates.format(club.fundacion, 'dd/MM/yyyy')}"></span></p>
+        <p><strong>Número de Socios:</strong> <span th:text="${club.numSocios}"></span></p>
+    </div>
+
+    <div th:if="${gimnastas != null and not #lists.isEmpty(gimnastas)}" class="card p-4">
+        <h3>Gimnastas Asociados</h3>
+        <table class="table table-sm">
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Edad</th>
+                    </tr>
+            </thead>
+            <tbody>
+                <tr th:each="gimnasta : ${gimnastas}">
+                    <td th:text="${gimnasta.nombre}"></td>
+                    <td th:text="${gimnasta.edad}"></td> 
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div th:unless="${gimnastas != null and not #lists.isEmpty(gimnastas)}" class="alert alert-info">
+        Este club no tiene gimnastas asociados registrados.
+    </div>
+
+    <a href="/club" class="btn btn-primary mt-3">Volver al Listado</a>
+</div>
+</body>
+</html>

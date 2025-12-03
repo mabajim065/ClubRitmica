@@ -6,15 +6,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import java.util.Optional;
 
 @Controller
-@RequestMapping("/aparato")
+// Unificamos el mapeo base a /aparatos (plural) para que coincida con las rutas HTML
+@RequestMapping("/aparatos") 
 public class AparatoController {
 
     @Autowired
     private AparatoRepository aparatoRepo;
+    // Eliminamos la inyección de BaileRepository
 
-    @GetMapping("/list")
+    @GetMapping({"", "/lista"}) // Maneja /aparatos y /aparatos/lista
     public String list(Model model) {
         model.addAttribute("aparatos", aparatoRepo.findAll());
         return "aparato/lista";
@@ -23,18 +26,36 @@ public class AparatoController {
     @GetMapping("/nuevo")
     public String nuevo(Model model) {
         model.addAttribute("aparato", new Aparato());
+        // Eliminamos model.addAttribute("bailes", ...)
         return "aparato/nuevo";
     }
 
-    @PostMapping("/crear")
-    public String crear(@ModelAttribute Aparato aparato) {
+    // Usamos /guardar para Crear y Editar (como lo piden las vistas)
+    @PostMapping("/guardar") 
+    public String guardar(@ModelAttribute Aparato aparato) {
         aparatoRepo.save(aparato);
-        return "redirect:/aparato/list";
+        return "redirect:/aparatos/lista";
     }
 
-    @GetMapping("/eliminar/{id}")
-    public String eliminar(@PathVariable Long id) {
+ 
+    @GetMapping("/editar/{id}")
+    public String editar(@PathVariable Long id, Model model) {
+        Optional<Aparato> aparatoOptional = aparatoRepo.findById(id);
+        
+        if (aparatoOptional.isPresent()) {
+            model.addAttribute("aparato", aparatoOptional.get());
+            // Eliminamos model.addAttribute("bailes", ...)
+            return "aparato/editar";
+        }
+        
+        // Manejo de error si el ID no existe
+        return "redirect:/aparatos/lista";
+    }
+    
+    // Mapeo para Borrar
+    @GetMapping("/borrar/{id}") 
+    public String borrar(@PathVariable Long id) {
         aparatoRepo.deleteById(id);
-        return "redirect:/aparato/list";
+        return "redirect:/aparatos/lista";
     }
 }

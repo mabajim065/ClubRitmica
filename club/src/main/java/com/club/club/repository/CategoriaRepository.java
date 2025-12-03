@@ -2,9 +2,10 @@ package com.club.club.repository;
 
 import com.club.club.model.Categoria;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-import java.util.List;
+import org.springframework.stereotype.Repository;
 
-public interface CategoriaRepository extends JpaRepository<Categoria, Long> {
+@Repository
+//                                                     VVVVVVV  <-- AQUÍ estaba el problema (antes Long)
+public interface CategoriaRepository extends JpaRepository<Categoria, Integer> {
 
 }

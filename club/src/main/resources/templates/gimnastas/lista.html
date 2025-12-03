@@ -10,7 +10,7 @@
 
 <div class="container mt-4">
     <h2>Lista de Gimnastas</h2>
-    <a class="btn btn-primary mb-3" href="/gimnastas/nuevo">Nueva Gimnasta</a>
+    <a class="btn btn-primary mb-3" href="/gimnasta/nuevo">Nueva Gimnasta</a> 
     <table class="table table-striped">
         <thead>
             <tr>
@@ -23,19 +23,34 @@
             </tr>
         </thead>
         <tbody>
-            <tr th:each="gimnasta : ${gimnastas}">
+            <tr th:each="gimnasta : ${gimnastas.content}">
                 <td th:text="${gimnasta.id}"></td>
                 <td th:text="${gimnasta.nombre}"></td>
                 <td th:text="${gimnasta.apellidos}"></td>
                 <td th:text="${gimnasta.club.nombre}"></td>
                 <td th:text="${gimnasta.categoria.nombre}"></td>
                 <td>
-                    <a th:href="@{/gimnastas/editar/{id}(id=${gimnasta.id})}" class="btn btn-warning btn-sm">Editar</a>
-                    <a th:href="@{/gimnastas/borrar/{id}(id=${gimnasta.id})}" class="btn btn-danger btn-sm">Borrar</a>
+                    <a th:href="@{/gimnasta/detalle/{id}(id=${gimnasta.id})}" class="btn btn-info btn-sm">Ver Detalles</a>
+                    
+                    <a th:href="@{/gimnasta/editar/{id}(id=${gimnasta.id})}" class="btn btn-warning btn-sm">Editar</a>
+                    <a th:href="@{/gimnasta/eliminar/{id}(id=${gimnasta.id})}" class="btn btn-danger btn-sm" onclick="return confirm('¿Estás seguro?');">Borrar</a>
                 </td>
             </tr>
         </tbody>
     </table>
+    <nav th:if="${gimnastas.totalPages > 0}">
+        <ul class="pagination">
+            <li class="page-item" th:classappend="${currentPage == 0 ? 'disabled' : ''}">
+                <a class="page-link" th:href="@{/gimnasta/list(page=${currentPage - 1}, size=${gimnastas.size})}">Anterior</a>
+            </li>
+            <li class="page-item" th:each="i : ${#numbers.sequence(0, gimnastas.totalPages - 1)}" th:classappend="${currentPage == i ? 'active' : ''}">
+                <a class="page-link" th:href="@{/gimnasta/list(page=${i}, size=${gimnastas.size})}" th:text="${i + 1}"></a>
+            </li>
+            <li class="page-item" th:classappend="${currentPage == gimnastas.totalPages - 1 ? 'disabled' : ''}">
+                <a class="page-link" th:href="@{/gimnasta/list(page=${currentPage + 1}, size=${gimnastas.size})}">Siguiente</a>
+            </li>
+        </ul>
+    </nav>
 </div>
 </body>
 </html>

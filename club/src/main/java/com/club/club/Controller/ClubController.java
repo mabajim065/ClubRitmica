@@ -21,8 +21,8 @@ public class ClubController {
     @Autowired
     private GimnastaRepository gimnastaRepo;
 
-    // LISTADO PAGINADO
-    @GetMapping
+    // LISTADO PAGINADO (CORREGIDO para usar /list y coincidir con Gimnasta)
+    @GetMapping("/list") 
     public String list(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "5") int size,
@@ -42,29 +42,29 @@ public class ClubController {
         return "club/nuevo";
     }
 
-    // CREAR
-    @PostMapping("/crear")
+    // CREAR (POST)
+    @PostMapping("/crear") // Ruta usada por nuevo.html
     public String crear(@ModelAttribute Club club) {
         clubRepo.save(club);
         return "redirect:/club/list";
     }
 
-    // EDITAR
+    // EDITAR (GET)
     @GetMapping("/editar/{id}")
     public String editar(@PathVariable Long id, Model model) {
         model.addAttribute("club", clubRepo.findById(id).orElse(null));
         return "club/editar";
     }
 
-    // MODIFICAR
-    @PostMapping("/modificar")
+    // MODIFICAR (POST)
+    @PostMapping("/modificar") // Ruta usada por editar.html
     public String modificar(@ModelAttribute Club club) {
         clubRepo.save(club);
         return "redirect:/club/list";
     }
 
-    // ELIMINAR
-    @GetMapping("/eliminar/{id}")
+    // ELIMINAR (GET)
+    @GetMapping("/eliminar/{id}") // Ruta usada por lista.html
     public String eliminar(@PathVariable Long id) {
         clubRepo.deleteById(id);
         return "redirect:/club/list";
@@ -73,10 +73,9 @@ public class ClubController {
     // DETALLE ESPECIAL
     @GetMapping("/detalle/{id}")
     public String detalle(@PathVariable Long id, Model model) {
-
         Club club = clubRepo.findById(id).orElse(null);
         model.addAttribute("club", club);
-
+        // Además, cargamos las gimnastas de ese club
         model.addAttribute("gimnastas", gimnastaRepo.findByClubId(id));
 
         return "club/detalle";

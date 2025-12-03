@@ -10,13 +10,13 @@
 
 <div class="container mt-4">
     <h2>Lista de Conjuntos</h2>
-    <a class="btn btn-primary mb-3" href="/conjuntos/nuevo">Nuevo Conjunto</a>
+    <a class="btn btn-primary mb-3" th:href="@{/conjunto/nuevo}">Nuevo Conjunto</a>
     <table class="table table-striped">
         <thead>
             <tr>
                 <th>ID</th>
                 <th>Nombre</th>
-                <th>Entrenadores</th>
+                <th>Categoría</th>
                 <th>Acciones</th>
             </tr>
         </thead>
@@ -24,12 +24,10 @@
             <tr th:each="conjunto : ${conjuntos}">
                 <td th:text="${conjunto.id}"></td>
                 <td th:text="${conjunto.nombre}"></td>
+                <td th:text="${conjunto.categoria}"></td>
                 <td>
-                    <span th:each="ent : ${conjunto.entrenadores}" th:text="${ent.nombre} + ' ' + ${ent.apellidos} + ' | '"></span>
-                </td>
-                <td>
-                    <a th:href="@{/conjuntos/editar/{id}(id=${conjunto.id})}" class="btn btn-warning btn-sm">Editar</a>
-                    <a th:href="@{/conjuntos/borrar/{id}(id=${conjunto.id})}" class="btn btn-danger btn-sm">Borrar</a>
+                    <a th:href="@{/conjunto/editar/{id}(id=${conjunto.id})}" class="btn btn-warning btn-sm">Editar</a>
+                    <a th:href="@{/conjunto/eliminar/{id}(id=${conjunto.id})}" class="btn btn-danger btn-sm" onclick="return confirm('¿Eliminar?');">Borrar</a>
                 </td>
             </tr>
         </tbody>

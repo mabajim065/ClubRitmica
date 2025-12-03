@@ -7,30 +7,25 @@
 </head>
 <body>
 <div th:replace="fragments/menu :: menu"></div>
+
 <div class="container mt-4">
     <h2>Editar Baile</h2>
-    <form th:action="@{/baile/guardar}" th:object="${baile}" method="post">
+    
+    <form th:action="@{/baile/crear}" th:object="${baile}" method="post">
         <input type="hidden" th:field="*{id}">
+        
         <div class="mb-3">
             <label class="form-label">Nombre</label>
             <input type="text" class="form-control" th:field="*{nombre}" required>
         </div>
+
         <div class="mb-3">
-            <label class="form-label">Puntuación</label>
-            <select class="form-select" th:field="*{puntuacion}" required>
-                <option th:each="p : ${puntuaciones}" th:value="${p}" th:text="${p.valor}" 
-                        th:selected="${baile.puntuacion?.id} == ${p.id}"></option>
-            </select>
+            <label class="form-label">Duración</label>
+            <input type="time" class="form-control" th:field="*{duracion}" required>
         </div>
-        <div class="mb-3">
-            <label class="form-label">Aparatos</label>
-            <select class="form-select" th:field="*{aparatos}" multiple>
-                <option th:each="a : ${aparatos}" th:value="${a}" th:text="${a.nombre}" 
-                        th:selected="${baile.aparatos.contains(a)}"></option>
-            </select>
-        </div>
+
         <button type="submit" class="btn btn-success">Guardar Cambios</button>
-        <a href="/baile" class="btn btn-secondary">Cancelar</a>
+        <a th:href="@{/baile/list}" class="btn btn-secondary">Cancelar</a>
     </form>
 </div>
 </body>

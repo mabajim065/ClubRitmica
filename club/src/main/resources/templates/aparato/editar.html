@@ -15,17 +15,9 @@
             <label class="form-label">Nombre</label>
             <input type="text" class="form-control" th:field="*{nombre}" required>
         </div>
-        <div class="mb-3">
-            <label class="form-label">Bailes Asociados</label>
-            <select class="form-select" th:field="*{bailes}" multiple>
-                <option th:each="b : ${bailes}" th:value="${b}" th:text="${b.nombre}" 
-                        th:selected="${aparato.bailes.contains(b)}"></option>
-            </select>
-        </div>
         <button type="submit" class="btn btn-success">Guardar Cambios</button>
         <a href="/aparatos" class="btn btn-secondary">Cancelar</a>
     </form>
 </div>
 </body>
 </html>
-s

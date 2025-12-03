@@ -10,26 +10,26 @@
 
 <div class="container mt-4">
     <h2>Lista de Puntuaciones</h2>
-    <a class="btn btn-primary mb-3" href="/puntuaciones/nuevo">Nueva Puntuación</a>
+    <a class="btn btn-primary mb-3" th:href="@{/puntuacion/nuevo}">Nueva Puntuación</a>
     <table class="table table-striped">
         <thead>
             <tr>
                 <th>ID</th>
-                <th>Valor</th>
-                <th>Gimnasta</th>
-                <th>Competición</th>
+                <th>Nota</th>
+                <th>Comentario</th>
+                <th>Fecha</th>
                 <th>Acciones</th>
             </tr>
         </thead>
         <tbody>
             <tr th:each="p : ${puntuaciones}">
                 <td th:text="${p.id}"></td>
-                <td th:text="${p.valor}"></td>
-                <td th:text="${p.gimnasta.nombre} + ' ' + ${p.gimnasta.apellidos}"></td>
-                <td th:text="${p.competicion.nombre}"></td>
+                <td th:text="${p.nota}"></td>
+                <td th:text="${p.comentario}"></td>
+                <td th:text="${p.fecha}"></td>
                 <td>
-                    <a th:href="@{/puntuaciones/editar/{id}(id=${p.id})}" class="btn btn-warning btn-sm">Editar</a>
-                    <a th:href="@{/puntuaciones/borrar/{id}(id=${p.id})}" class="btn btn-danger btn-sm">Borrar</a>
+                    <a th:href="@{/puntuacion/editar/{id}(id=${p.id})}" class="btn btn-warning btn-sm">Editar</a>
+                    <a th:href="@{/puntuacion/eliminar/{id}(id=${p.id})}" class="btn btn-danger btn-sm" onclick="return confirm('¿Eliminar puntuación?');">Borrar</a>
                 </td>
             </tr>
         </tbody>

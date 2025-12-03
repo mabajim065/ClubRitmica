@@ -9,21 +9,18 @@
 <div th:replace="fragments/menu :: menu"></div>
 <div class="container mt-4">
     <h2>Editar Conjunto</h2>
-    <form th:action="@{/conjuntos/guardar}" th:object="${conjunto}" method="post">
+    <form th:action="@{/conjunto/crear}" th:object="${conjunto}" method="post">
         <input type="hidden" th:field="*{id}">
         <div class="mb-3">
             <label class="form-label">Nombre</label>
             <input type="text" class="form-control" th:field="*{nombre}" required>
         </div>
         <div class="mb-3">
-            <label class="form-label">Entrenadores</label>
-            <select class="form-select" th:field="*{entrenadores}" multiple>
-                <option th:each="ent : ${entrenadores}" th:value="${ent}" th:text="${ent.nombre} + ' ' + ${ent.apellidos}"
-                        th:selected="${conjunto.entrenadores.contains(ent)}"></option>
-            </select>
+            <label class="form-label">Categoría</label>
+            <input type="text" class="form-control" th:field="*{categoria}">
         </div>
         <button type="submit" class="btn btn-success">Guardar Cambios</button>
-        <a href="/conjuntos" class="btn btn-secondary">Cancelar</a>
+        <a th:href="@{/conjunto/list}" class="btn btn-secondary">Cancelar</a>
     </form>
 </div>
 </body>

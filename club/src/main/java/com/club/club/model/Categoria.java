@@ -1,7 +1,6 @@
 package com.club.club.model;
 
 import jakarta.persistence.*;
-import java.util.List;
 
 @Entity
 @Table(name = "Categoria")
@@ -9,8 +8,10 @@ public class Categoria {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "idCategoria")
-    private Integer idCategoria;
+    // Puedes dejar name="idCategoria" si en la base de datos se llama así,
+    // o cambiarlo a "id" si quieres que coincida todo. Aquí lo dejo mapeado para seguridad.
+    @Column(name = "idCategoria") 
+    private Integer id;
 
     @Column(name = "Edad")
     private Integer edad;
@@ -18,19 +19,17 @@ public class Categoria {
     @Column(name = "Nombre")
     private String nombre;
 
-    // Relación 1:N con Gimnasta
-    /*
-     * @OneToMany(mappedBy = "categoria", cascade = CascadeType.ALL)
-     * private List<Gimnasta> gimnastas;
-     */
-
-    // Getters y setters
-    public Integer getIdCategoria() {
-        return idCategoria;
+    public Categoria() {
     }
 
-    public void setIdCategoria(Integer idCategoria) {
-        this.idCategoria = idCategoria;
+    // Getters y setters actualizados a "id"
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public Integer getEdad() {
@@ -48,14 +47,4 @@ public class Categoria {
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
-
-    /*
-     * public List<Gimnasta> getGimnastas() {
-     * return gimnastas;
-     * }
-     * 
-     * public void setGimnastas(List<Gimnasta> gimnastas) {
-     * this.gimnastas = gimnastas;
-     * }
-     */
 }

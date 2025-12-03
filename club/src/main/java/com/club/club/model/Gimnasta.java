@@ -2,32 +2,34 @@ package com.club.club.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
-
+import lombok.ToString; // IMPORTANTE
+import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
 import java.time.LocalDate;
 
-@Data
 @Entity
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Table(name = "Gimnasta")
 public class Gimnasta {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "idGimnasta")
+    private Integer id;
 
+    @Column(name = "Nombre")
     private String nombre;
-    private int edad;
+
+    @Column(name = "Apellidos")
+    private String apellidos;
+
+    @Column(name = "FechaNacimiento")
     private LocalDate fechaNacimiento;
-    private String nivel;
-    private String especialidad;
 
     @ManyToOne
-    @JoinColumn(name = "club_id", nullable = false)
+    @JoinColumn(name = "idClub") 
+    @ToString.Exclude // <--- ESTO EVITA QUE LA APLICACIÓN EXPLOTE
     private Club club;
-
-    /*
-     * @ManyToOne
-     * 
-     * @JoinColumn(name = "categoria_id", nullable = false)
-     * private Categoria categoria;
-     */
-
 }
