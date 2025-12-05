@@ -1,0 +1,36 @@
+2025-12-05T22:26:44.684+01:00  INFO 7452 --- [club] [main] com.club.club.ClubApplication            : Starting ClubApplication using Java 21.0.9 with PID 7452 (C:\Users\juanc\OneDrive\2DAW\ENTORNO-SERVIDOR\SPRINGBOOT\ClubRitmica\club\target\classes started by juanc in C:\Users\juanc\OneDrive\2DAW\ENTORNO-SERVIDOR\SPRINGBOOT\ClubRitmica\club)
+2025-12-05T22:26:44.691+01:00  INFO 7452 --- [club] [main] com.club.club.ClubApplication            : No active profile set, falling back to 1 default profile: "default"
+2025-12-05T22:26:46.276+01:00  INFO 7452 --- [club] [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-12-05T22:26:46.543+01:00  INFO 7452 --- [club] [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 231 ms. Found 10 JPA repository interfaces.
+2025-12-05T22:26:47.551+01:00  INFO 7452 --- [club] [main] o.s.boot.tomcat.TomcatWebServer          : Tomcat initialized with port 8080 (http)
+2025-12-05T22:26:47.574+01:00  INFO 7452 --- [club] [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-12-05T22:26:47.575+01:00  INFO 7452 --- [club] [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/11.0.13]
+2025-12-05T22:26:47.666+01:00  INFO 7452 --- [club] [main] b.w.c.s.WebApplicationContextInitializer : Root WebApplicationContext: initialization completed in 2827 ms
+2025-12-05T22:26:48.050+01:00  INFO 7452 --- [club] [main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-12-05T22:26:48.207+01:00  INFO 7452 --- [club] [main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 7.1.4.Final
+2025-12-05T22:26:49.208+01:00  INFO 7452 --- [club] [main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-12-05T22:26:49.292+01:00  INFO 7452 --- [club] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2025-12-05T22:26:49.907+01:00  INFO 7452 --- [club] [main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@1a02ebe0
+2025-12-05T22:26:49.910+01:00  INFO 7452 --- [club] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2025-12-05T22:26:50.014+01:00  WARN 7452 --- [club] [main] org.hibernate.orm.deprecation            : HHH90000025: MySQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-12-05T22:26:50.060+01:00  INFO 7452 --- [club] [main] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [jdbc:mysql://localhost:3306/club]
+	Database driver: MySQL Connector/J
+	Database dialect: MySQLDialect
+	Database version: 9.2
+	Default catalog/schema: club/undefined
+	Autocommit mode: undefined/unknown
+	Isolation level: REPEATABLE_READ [default REPEATABLE_READ]
+	JDBC fetch size: none
+	Pool: DatasourceConnectionProviderImpl
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-12-05T22:26:51.864+01:00  INFO 7452 --- [club] [main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-12-05T22:26:52.175+01:00  INFO 7452 --- [club] [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-12-05T22:26:52.347+01:00  INFO 7452 --- [club] [main] o.s.d.j.r.query.QueryEnhancerFactories   : Hibernate is in classpath; If applicable, HQL parser will be used.
+2025-12-05T22:26:55.503+01:00  INFO 7452 --- [club] [main] o.s.boot.tomcat.TomcatWebServer          : Tomcat started on port 8080 (http) with context path '/'
+2025-12-05T22:26:55.518+01:00  INFO 7452 --- [club] [main] com.club.club.ClubApplication            : Started ClubApplication in 11.945 seconds (process running for 13.221)
+2025-12-05T22:27:03.871+01:00  INFO 7452 --- [club] [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-12-05T22:27:03.872+01:00  INFO 7452 --- [club] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2025-12-05T22:27:03.876+01:00  INFO 7452 --- [club] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 3 ms
+2025-12-05T22:27:04.663+01:00  WARN 7452 --- [club] [http-nio-8080-exec-1] actStandardFragmentInsertionTagProcessor : [THYMELEAF][http-nio-8080-exec-1][gimnasta/lista] Deprecated unwrapped fragment expression "fragments/menu :: menu" found in template gimnasta/lista, line 11, col 10. Please use the complete syntax of fragment expressions instead ("~{fragments/menu :: menu}"). The old, unwrapped syntax for fragment expressions will be removed in future versions of Thymeleaf.

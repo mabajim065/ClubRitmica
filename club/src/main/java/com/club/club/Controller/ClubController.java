@@ -1,5 +1,15 @@
 package com.club.club.Controller;
 
+import com.club.club.model.Club;
+import com.club.club.repository.ClubRepository;
+import com.club.club.repository.GimnastaRepository;
+import com.lowagie.text.*;
+import com.lowagie.text.pdf.PdfPCell;
+import com.lowagie.text.pdf.PdfPTable;
+import com.lowagie.text.pdf.PdfWriter;
+import jakarta.servlet.http.HttpServletResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -8,10 +18,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import com.club.club.model.Club;
-import com.club.club.repository.ClubRepository;
-import com.club.club.repository.GimnastaRepository;
-
+import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -19,30 +28,25 @@ import java.util.List;
 @RequestMapping("/club")
 public class ClubController {
 
+    // 1. LOGGER PARA GESTIÓN DE CAMBIOS
+    private static final Logger logger = LoggerFactory.getLogger(ClubController.class);
+
     @Autowired
     private ClubRepository clubRepo;
 
     @Autowired
     private GimnastaRepository gimnastaRepo;
 
-    // LISTADO PAGINADO PRINCIPAL
+    // LISTADO PAGINADO
     @GetMapping("/list")
-    public String list(
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "5") int size,
-            Model model) {
-
-        Page<Club> clubes = clubRepo.findAll(PageRequest.of(page, size));
+    public String list(@RequestParam(defaultValue = "0") int page, Model model) {
+        Page<Club> clubes = clubRepo.findAll(PageRequest.of(page, 5));
         model.addAttribute("clubes", clubes);
         model.addAttribute("currentPage", page);
-        model.addAttribute("totalClubs", clubRepo.count()); // Conteo total
-        model.addAttribute("modoBusqueda", false); // Bandera para indicar si es búsqueda o lista completa
-
+        model.addAttribute("totalClubs", clubRepo.count());
+        model.addAttribute("modoBusqueda", false);
         return "club/lista";
     }
-
-    // [ ... MÉTODOS nuevo, crear, editar, modificar, eliminar, detalle ya
-    // existentes ... ]
 
     // NUEVO
     @GetMapping("/nuevo")
@@ -51,92 +55,131 @@ public class ClubController {
         return "club/nuevo";
     }
 
-    // CREAR (POST)
+    // CREAR (Con Log)
     @PostMapping("/crear")
     public String crear(@ModelAttribute Club club) {
         clubRepo.save(club);
+        // GESTIÓN: Dejamos registro en consola
+        logger.info("GESTIÓN: Se ha CREADO un nuevo club -> " + club.getNombre());
         return "redirect:/club/list";
     }
 
-    // EDITAR (GET)
+    // EDITAR
     @GetMapping("/editar/{id}")
     public String editar(@PathVariable Long id, Model model) {
         model.addAttribute("club", clubRepo.findById(id).orElse(null));
         return "club/editar";
     }
 
-    // MODIFICAR (POST)
+    // MODIFICAR (Con Log)
     @PostMapping("/modificar")
     public String modificar(@ModelAttribute Club club) {
         clubRepo.save(club);
+        logger.info("GESTIÓN: Se ha MODIFICADO el club -> " + club.getNombre());
         return "redirect:/club/list";
     }
 
-    // ELIMINAR (GET)
+    // ELIMINAR (Con Log)
     @GetMapping("/eliminar/{id}")
     public String eliminar(@PathVariable Long id) {
+        // Recuperamos el nombre antes de borrar para el log
+        String nombre = clubRepo.findById(id).map(Club::getNombre).orElse("Desconocido");
         clubRepo.deleteById(id);
+        logger.warn("GESTIÓN: Se ha ELIMINADO el club -> " + nombre);
         return "redirect:/club/list";
     }
 
-    // DETALLE ESPECIAL
+    // DETALLE
     @GetMapping("/detalle/{id}")
     public String detalle(@PathVariable Long id, Model model) {
         Club club = clubRepo.findById(id).orElse(null);
         model.addAttribute("club", club);
-        // Además, cargamos las gimnastas de ese club
         model.addAttribute("gimnastas", gimnastaRepo.findByClubId(id));
-
         return "club/detalle";
     }
 
-    // --- MÉTODOS DE BÚSQUEDA Y FILTRO ---
-
-    // 1. findByCiudadAndNumSociosGreaterThan (Filtro)
-    @GetMapping("/filtrar-socios")
-    public String filtrarPorSocios(@RequestParam("ciudad") String ciudad,
-            @RequestParam("minSocios") int minSocios,
+    // BUSCAR
+    @GetMapping("/buscar")
+    public String buscar(
+            @RequestParam(value = "nombre", required = false) String nombre,
+            @RequestParam(value = "ciudad", required = false) String ciudad,
+            @RequestParam(value = "minSocios", required = false) Integer minSocios,
             Model model) {
-        List<Club> resultados = clubRepo.findByCiudadAndNumSociosGreaterThan(ciudad, minSocios);
-
-        // Creamos una Page simulada para reutilizar la vista lista.html
-        model.addAttribute("clubes", new PageImpl<>(resultados, PageRequest.of(0, 50), resultados.size()));
+        
+        String n = (nombre != null) ? nombre : "";
+        String c = (ciudad != null) ? ciudad : "";
+        int s = (minSocios != null) ? minSocios : 0;
+        
+        List<Club> res = clubRepo.findByNombreContainingAndCiudadContainingAndNumSociosGreaterThanEqual(n, c, s);
+        
+        model.addAttribute("clubes", new PageImpl<>(res, PageRequest.of(0, 100), res.size()));
         model.addAttribute("currentPage", 0);
-        model.addAttribute("totalClubs", clubRepo.count());
+        model.addAttribute("totalClubs", res.size());
         model.addAttribute("modoBusqueda", true);
-
         return "club/lista";
     }
-
-    // 2. buscarPorCiudadYSocios (@Query)
-    @GetMapping("/consulta-personalizada")
-    public String consultaPersonalizada(@RequestParam("ciudad") String ciudad,
-            @RequestParam("minSocios") int minSocios,
-            Model model) {
-        List<Club> resultados = clubRepo.buscarPorCiudadYSocios(ciudad, minSocios);
-
-        // Creamos una Page simulada
-        model.addAttribute("clubes", new PageImpl<>(resultados, PageRequest.of(0, 50), resultados.size()));
-        model.addAttribute("currentPage", 0);
-        model.addAttribute("totalClubs", clubRepo.count());
-        model.addAttribute("modoBusqueda", true);
-
-        return "club/lista";
+    
+    // ESTADISTICAS
+    @GetMapping("/estadisticas")
+    public String estadisticas(Model model) {
+        model.addAttribute("totalClubes", clubRepo.count());
+        model.addAttribute("totalGimnastas", gimnastaRepo.count());
+        model.addAttribute("clubesMadrid", clubRepo.countByCiudad("Madrid"));
+        model.addAttribute("gimnastaMasJoven", gimnastaRepo.findTopByOrderByFechaNacimientoDesc());
+        model.addAttribute("clubMasAntiguo", clubRepo.findTopByOrderByFundacionAsc());
+        return "club/estadisticas";
     }
 
-    // --- MÉTODOS DE ACCIÓN DE BORRADO ---
+    // --- NUEVO: EXPORTAR A PDF ---
+    @GetMapping("/exportar-pdf")
+    public void exportarPDF(HttpServletResponse response) throws IOException {
+        response.setContentType("application/pdf");
+        DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
+        String currentDateTime = dateFormatter.format(new Date());
 
-    // 3. deleteByCiudad
-    @PostMapping("/eliminar-ciudad")
-    public String eliminarPorCiudad(@RequestParam("ciudad") String ciudad) {
-        clubRepo.deleteByCiudad(ciudad);
-        return "redirect:/club/list";
-    }
+        String headerKey = "Content-Disposition";
+        String headerValue = "attachment; filename=clubes_" + currentDateTime + ".pdf";
+        response.setHeader(headerKey, headerValue);
 
-    // 4. deleteByNumSociosLessThan
-    @PostMapping("/eliminar-socios-menor")
-    public String eliminarSociosMenor(@RequestParam("maxSocios") int maxSocios) {
-        clubRepo.deleteByNumSociosLessThan(maxSocios);
-        return "redirect:/club/list";
+        List<Club> listaClubes = clubRepo.findAll();
+
+        // Crear documento
+        Document document = new Document(PageSize.A4);
+        PdfWriter.getInstance(document, response.getOutputStream());
+
+        document.open();
+        
+        // Título
+        Font fontTitle = FontFactory.getFont(FontFactory.HELVETICA_BOLD);
+        fontTitle.setSize(18);
+        Paragraph paragraph = new Paragraph("Listado de Clubes", fontTitle);
+        paragraph.setAlignment(Paragraph.ALIGN_CENTER);
+        document.add(paragraph);
+        document.add(Chunk.NEWLINE);
+
+        // Tabla
+        PdfPTable table = new PdfPTable(5); // 5 columnas
+        table.setWidthPercentage(100);
+        
+        // Cabeceras
+        String[] cabeceras = {"ID", "Nombre", "Ciudad", "Fundación", "Socios"};
+        for (String cabecera : cabeceras) {
+            PdfPCell cell = new PdfPCell(new Phrase(cabecera));
+            cell.setBackgroundColor(java.awt.Color.LIGHT_GRAY);
+            cell.setPadding(5);
+            table.addCell(cell);
+        }
+
+        // Datos
+        for (Club club : listaClubes) {
+            table.addCell(String.valueOf(club.getId()));
+            table.addCell(club.getNombre());
+            table.addCell(club.getCiudad());
+            table.addCell(club.getFundacion().toString()); // Ajusta formato si quieres
+            table.addCell(String.valueOf(club.getNumSocios()));
+        }
+
+        document.add(table);
+        document.close();
     }
 }

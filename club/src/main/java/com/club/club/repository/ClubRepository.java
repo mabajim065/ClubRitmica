@@ -13,37 +13,44 @@ import java.util.List;
 @Repository
 public interface ClubRepository extends JpaRepository<Club, Long> {
 
-    // --- MÉTODOS DE BORRADO (REQUISITO NUEVO) ---
+    // --- MÉTODOS DE BORRADO (REQUISITO) ---
 
     // 1. Borrar todos los registros que cumplan cierta condición (por Ciudad)
     @Transactional
-    void deleteByCiudad(String ciudad);
+    void deleteByCiudad(String ciudad); // Referenciado en ClubController.eliminarPorCiudad
 
     // 2. Borrar todos los registros que cumplan cierta condición (por Número de
     // Socios menor a)
     @Transactional
-    void deleteByNumSociosLessThan(int numSocios);
+    void deleteByNumSociosLessThan(int numSocios); // Referenciado en ClubController.eliminarSociosMenor
 
-    // --- MÉTODOS DE BÚSQUEDA Y FILTROS (REQUISITO NUEVO Y EXISTENTE) ---
+    // --- MÉTODOS DE BÚSQUEDA Y FILTROS ---
 
-    // 3. Un método de búsqueda con filtros (Combinación de varios campos)
-    // Busca clubs de una Ciudad concreta y con un mínimo de Socios
-    List<Club> findByCiudadAndNumSociosGreaterThan(String ciudad, int minSocios);
+    // 3. Busca clubs de una Ciudad concreta y con un mínimo de Socios
+    List<Club> findByCiudadAndNumSociosGreaterThan(String ciudad, int minSocios); // Referenciado en ClubController.filtrarPorSocios
 
-    // 4. Una consulta personalizada con @Query (existente, pero sigue siendo
-    // requisito)
-    // Busca clubs de una ciudad con un mínimo de socios
+    // 4. Una consulta personalizada con @Query
     @Query("SELECT c FROM Club c WHERE c.ciudad = :ciudad AND c.numSocios > :minSocios")
-    List<Club> buscarPorCiudadYSocios(@Param("ciudad") String ciudad, @Param("minSocios") int minSocios);
+    List<Club> buscarPorCiudadYSocios(@Param("ciudad") String ciudad, @Param("minSocios") int minSocios); // Referenciado en ClubController.consultaPersonalizada
+    
+    // ** 5. MÉTODO AÑADIDO: Búsqueda Avanzada Combinada (CRÍTICO para ClubController.buscar) **
+    // Busca por Nombre (parcial) Y Ciudad (parcial) Y Socios (mayor o igual)
+  List<Club> findByNombreContainingAndCiudadContainingAndNumSociosGreaterThanEqual(
+    String nombre, 
+    String ciudad, 
+    int numSocios
+);
 
-    // --- MÉTODOS ADICIONALES EXISTENTES ---
-    List<Club> findByNombreContainingAndCiudad(String nombre, String ciudad);
 
+    // --- MÉTODOS ADICIONALES/AGREGACIÓN ---
+    
+    // NOTA: El método findByNombreContainingAndCiudad se ha reemplazado por el combinado arriba.
+    
     List<Club> findByFundacionBeforeAndCiudad(Date fundacion, String ciudad);
 
     List<Club> findAllByOrderByNombreAsc();
 
-    long countByCiudad(String ciudad);
+    long countByCiudad(String ciudad); // Referenciado en ClubController.estadisticas
 
-    Club findTopByOrderByFundacionAsc();
+    Club findTopByOrderByFundacionAsc(); // Referenciado en ClubController.estadisticas
 }

@@ -1,125 +1,92 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-
 <head>
     <meta charset="UTF-8">
-    <title>Lista de Clubes</title>
+    <title>Gestión de Clubes</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
-
 <body>
+    
     <div th:replace="fragments/menu :: menu"></div>
 
     <div class="container mt-4">
-        <h2>Lista de Clubes <span th:if="${totalClubs != null}" class="badge bg-primary"
-                th:text="'Total: ' + ${totalClubs}"></span></h2>
-
-        <a th:href="@{/club/nuevo}" class="btn btn-primary mb-3">Nuevo Club</a>
-        <a th:if="${modoBusqueda}" th:href="@{/club/list}" class="btn btn-secondary mb-3">Volver a lista completa</a>
-
-        <div class="card p-3 mb-4 bg-light">
-            <h5>Consultas y Acciones Especiales</h5>
-
-            <div class="row g-2 mb-3">
-                <div class="col-md-6">
-                    <form th:action="@{/club/filtrar-socios}" method="get" class="d-flex">
-                        <input type="text" name="ciudad" placeholder="Ciudad (ej. Madrid)" class="form-control me-1"
-                            required>
-                        <input type="number" name="minSocios" placeholder="Socios Mínimos" class="form-control me-1"
-                            required>
-                        <button type="submit" class="btn btn-outline-info">Filtrar por Socios</button>
-                    </form>
-                </div>
-
-                <div class="col-md-6">
-                    <form th:action="@{/club/consulta-personalizada}" method="get" class="d-flex">
-                        <input type="text" name="ciudad" placeholder="Ciudad (ej. Sevilla)" class="form-control me-1"
-                            required>
-                        <input type="number" name="minSocios" placeholder="Socios Mínimos" class="form-control me-1"
-                            required>
-                        <button type="submit" class="btn btn-outline-warning">Consulta JPQL</button>
-                    </form>
-                </div>
-            </div>
-
-            <div class="row g-2">
-                <h6>Acciones de Borrado Masivo (Usar con precaución)</h6>
-                <div class="col-md-6">
-                    <form th:action="@{/club/eliminar-ciudad}" method="post"
-                        onsubmit="return confirm('ALERTA: ¿Estás seguro de ELIMINAR TODOS los clubes de esta ciudad?');"
-                        class="d-flex">
-                        <input type="text" name="ciudad" placeholder="Ciudad a borrar" class="form-control me-1"
-                            required>
-                        <button type="submit" class="btn btn-danger">Borrar por Ciudad</button>
-                    </form>
-                </div>
-
-                <div class="col-md-6">
-                    <form th:action="@{/club/eliminar-socios-menor}" method="post"
-                        onsubmit="return confirm('ALERTA: ¿Estás seguro de ELIMINAR clubes con menos de X socios?');"
-                        class="d-flex">
-                        <input type="number" name="maxSocios" placeholder="Máximo de Socios a borrar"
-                            class="form-control me-1" required>
-                        <button type="submit" class="btn btn-danger">Borrar por Socios</button>
-                    </form>
-                </div>
+        
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2>Listado de Clubes</h2>
+            <div>
+                <a th:href="@{/club/exportar-pdf}" class="btn btn-dark"> Exportar PDF</a>
+                <a th:href="@{/club/nuevo}" class="btn btn-success">Nuevo Club</a>
             </div>
         </div>
 
+        <div class="card p-3 mb-4 bg-light">
+            <form th:action="@{/club/buscar}" method="get" class="row g-2">
+                <div class="col-md-4">
+                    <input type="text" name="nombre" class="form-control" placeholder="Nombre...">
+                </div>
+                <div class="col-md-4">
+                    <input type="text" name="ciudad" class="form-control" placeholder="Ciudad...">
+                </div>
+                <div class="col-md-2">
+                    <input type="number" name="minSocios" class="form-control" placeholder="Min. Socios">
+                </div>
+                <div class="col-md-2">
+                    <button type="submit" class="btn btn-primary w-100">Buscar</button>
+                </div>
+            </form>
+            <div th:if="${modoBusqueda}" class="mt-2">
+                <a th:href="@{/club/list}" class="btn btn-sm btn-secondary">Limpiar Filtros</a>
+            </div>
+        </div>
 
-        <table class="table table-striped">
-            <thead>
+        <table class="table table-striped table-hover">
+            <thead class="table-dark">
                 <tr>
-                    <th>ID</th>
                     <th>Nombre</th>
-                    <th>Dirección</th>
                     <th>Ciudad</th>
-                    <th>Fundación</th>
                     <th>Socios</th>
                     <th>Acciones</th>
                 </tr>
             </thead>
             <tbody>
                 <tr th:each="club : ${clubes.content}">
-                    <td th:text="${club.id}"></td>
                     <td th:text="${club.nombre}"></td>
-                    <td th:text="${club.direccion}"></td>
                     <td th:text="${club.ciudad}"></td>
-                    <td th:text="${#dates.format(club.fundacion, 'dd/MM/yyyy')}"></td>
                     <td th:text="${club.numSocios}"></td>
                     <td>
-                        <a th:href="@{/club/detalle/{id}(id=${club.id})}" class="btn btn-info btn-sm">Ver Detalles</a>
-
+                        <a th:href="@{/club/detalle/{id}(id=${club.id})}" class="btn btn-info btn-sm">Ver</a>
                         <a th:href="@{/club/editar/{id}(id=${club.id})}" class="btn btn-warning btn-sm">Editar</a>
-                        <a th:href="@{/club/eliminar/{id}(id=${club.id})}" class="btn btn-danger btn-sm"
-                            onclick="return confirm('¿Estás seguro de eliminar el club ' + th:text='${club.nombre}' + '?');">Borrar</a>
+                        
+                        <a th:href="@{/club/eliminar/{id}(id=${club.id})}" 
+                           class="btn btn-danger btn-sm"
+                           onclick="return confirm('¿Seguro que quieres borrar este club?');">
+                           Borrar
+                        </a>
                     </td>
                 </tr>
             </tbody>
         </table>
 
-        <nav th:if="${clubes.totalPages > 1 and not modoBusqueda}">
+        <nav th:if="${clubes.totalPages > 1}">
             <ul class="pagination">
                 <li class="page-item" th:classappend="${currentPage == 0 ? 'disabled' : ''}">
-                    <a class="page-link"
-                        th:href="@{/club/list(page=${currentPage - 1}, size=${clubes.size})}">Anterior</a>
+                    <a class="page-link" th:href="@{/club/list(page=${currentPage - 1})}">Anterior</a>
                 </li>
-                <li class="page-item" th:each="i : ${#numbers.sequence(0, clubes.totalPages - 1)}"
-                    th:classappend="${currentPage == i ? 'active' : ''}">
-                    <a class="page-link" th:href="@{/club/list(page=${i}, size=${clubes.size})}" th:text="${i + 1}"></a>
+                <li class="page-item disabled">
+                    <span class="page-link" th:text="'Página ' + ${currentPage + 1}"></span>
                 </li>
                 <li class="page-item" th:classappend="${currentPage == clubes.totalPages - 1 ? 'disabled' : ''}">
-                    <a class="page-link"
-                        th:href="@{/club/list(page=${currentPage + 1}, size=${clubes.size})}">Siguiente</a>
+                    <a class="page-link" th:href="@{/club/list(page=${currentPage + 1})}">Siguiente</a>
                 </li>
             </ul>
         </nav>
 
         <div th:if="${clubes.empty}" class="alert alert-warning">
-            No se encontraron clubes con los criterios de búsqueda.
-            <a th:href="@{/club/list}">Ver lista completa</a>
+            No hay clubes registrados.
         </div>
-    </div>
-</body>
 
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
 </html>
