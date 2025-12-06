@@ -55,6 +55,16 @@ public class GimnastaController {
         return "redirect:/gimnasta/list";
     }
 
+// Método para ver Detalles
+@GetMapping("/detalle/{id}")
+public String verDetalle(@PathVariable Integer id, Model model) {
+    Gimnasta gimnasta = gimnastaRepo.findById(id)
+            .orElseThrow(() -> new IllegalArgumentException("ID inválido: " + id));
+    
+    model.addAttribute("gimnasta", gimnasta);
+    return "gimnasta/detalle"; 
+}
+
     // Método de acción: Modificar
     @PostMapping("/modificar")
     public String modificar(@ModelAttribute Gimnasta gimnasta) {

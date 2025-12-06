@@ -12,6 +12,7 @@
     <h2>Editar Gimnasta</h2>
     <form th:action="@{/gimnasta/modificar}" th:object="${gimnasta}" method="post">
         <input type="hidden" th:field="*{id}">
+        
         <div class="mb-3">
             <label class="form-label">Nombre</label>
             <input type="text" class="form-control" th:field="*{nombre}" required>
@@ -40,15 +41,10 @@
         <div class="mb-3">
             <label class="form-label">Club</label>
             <select class="form-select" th:field="*{club}" required>
-                <option th:each="c : ${clubs}" th:value="${c.id}" th:text="${c.nombre}" th:selected="${c.id} == ${gimnasta.club.id}"></option>
+                <option th:each="c : ${clubs}" th:value="${c.id}" th:text="${c.nombre}" th:selected="${gimnasta.club != null and c.id == gimnasta.club.id}"></option>
             </select>
         </div>
-        <div class="mb-3">
-            <label class="form-label">Categoría</label>
-            <select class="form-select" th:field="*{categoria}" required>
-                <option th:each="cat : ${categorias}" th:value="${cat.id}" th:text="${cat.nombre}" th:selected="${cat.id} == ${gimnasta.categoria.id}"></option>
-            </select>
-        </div>
+
         <button type="submit" class="btn btn-success">Guardar Cambios</button>
         <a href="/gimnasta/list" class="btn btn-secondary">Cancelar</a>
     </form>

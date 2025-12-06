@@ -2,14 +2,14 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title th:text="'Detalles de ' + ${gimnasta.nombre} + ' ' + ${gimnasta.apellidos}"></title>
+    <title th:text="'Detalles de ' + ${gimnasta.nombre}"></title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
 <div th:replace="fragments/menu :: menu"></div>
 
 <div class="container mt-4">
-    <h2 th:text="'Detalles del Gimnasta: ' + ${gimnasta.nombre} + ' ' + ${gimnasta.apellidos}">Detalles del Gimnasta</h2>
+    <h2 th:text="'Detalles del Gimnasta: ' + ${gimnasta.nombre} + ' ' + ${gimnasta.apellidos}"></h2>
     
     <div class="card p-4 mb-4">
         <h3>Información Personal</h3>
@@ -17,19 +17,22 @@
         <p><strong>Nombre:</strong> <span th:text="${gimnasta.nombre}"></span></p>
         <p><strong>Apellidos:</strong> <span th:text="${gimnasta.apellidos}"></span></p>
         <p><strong>Edad:</strong> <span th:text="${gimnasta.edad}"></span> años</p>
-        <p><strong>F. Nacimiento:</strong> <span th:text="${#temporals.format(gimnasta.fechaNacimiento, 'dd/MM/yyyy')}"></span></p>
+        <p><strong>F. Nacimiento:</strong> <span th:text="${gimnasta.fechaNacimiento != null} ? ${#temporals.format(gimnasta.fechaNacimiento, 'dd/MM/yyyy')} : 'N/A'"></span></p>
     </div>
 
     <div class="card p-4 mb-4">
         <h3>Detalles Deportivos</h3>
         <p><strong>Nivel:</strong> <span th:text="${gimnasta.nivel}"></span></p>
         <p><strong>Especialidad:</strong> <span th:text="${gimnasta.especialidad}"></span></p>
-        <p><strong>Club:</strong> <span th:text="${gimnasta.club.nombre}"></span> (<span th:text="${gimnasta.club.ciudad}"></span>)</p>
-        <p><strong>Categoría:</strong> <span th:text="${gimnasta.categoria.nombre}"></span></p>
-    </div>
+        
+        <p><strong>Club:</strong> 
+            <span th:if="${gimnasta.club != null}" th:text="${gimnasta.club.nombre} + ' (' + ${gimnasta.club.ciudad} + ')'"></span>
+            <span th:if="${gimnasta.club == null}" class="text-danger">Sin Club</span>
+        </p>
+        
+        </div>
 
     <a href="/gimnasta/list" class="btn btn-primary mt-3">Volver al Listado</a>
-    <a th:href="@{/gimnasta/editar/{id}(id=${gimnasta.id})}" class="btn btn-warning mt-3">Editar Gimnasta</a>
 </div>
 </body>
 </html>
