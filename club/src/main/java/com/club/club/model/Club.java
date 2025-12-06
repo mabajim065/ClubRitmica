@@ -26,6 +26,7 @@ public class Club {
     private int numSocios;
 
     @OneToMany(mappedBy = "club", cascade = CascadeType.ALL)
-    @ToString.Exclude // <--- ESTO EVITA EL ERROR 500 (BUCLE INFINITO)
+    //lo he tenido que utilizar para evitar que me saliera el error de referencia circular al hacer el toString
+    @ToString.Exclude 
     private List<Gimnasta> gimnastas;
 }

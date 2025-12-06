@@ -23,5 +23,27 @@ La aplicación ofrece una gestión integral del club deportivo mediante un siste
 fotos\image.png
 
 ## capturas de pantalla 
-
-
+fotos\borrar club.jpg
+fotos\detalle gimnasta.jpg
+fotos\detalles club.jpg
+fotos\editar club.jpg
+fotos\editar gimnasta.jpg
+fotos\lista aparato.jpg
+fotos\lista bailes.jpg
+fotos\lista categorias.jpg
+fotos\lista compe.jpg
+fotos\lista conjuntos.jpg
+fotos\lista entrenador.jpg
+fotos\lista gimnasta.jpg
+fotos\lista puntuaicon.jpg
+fotos\listaclub.jpg
+fotos\nueva categoria.jpg
+fotos\nueva compe.jpg
+fotos\nueva gimnasta.jpg
+fotos\nueva puntuacion.jpg
+fotos\nuevo aparato.jpg
+fotos\nuevo baile.jpg
+fotos\nuevo club.jpg
+fotos\nuevo club.jpg
+fotos\nuevo entrenador.jpg
+fotos\nuveo conjunto.jpg

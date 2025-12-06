@@ -37,7 +37,7 @@ public class ClubController {
     @Autowired
     private GimnastaRepository gimnastaRepo;
 
-    // LISTADO PAGINADO
+    // LISTADO 
     @GetMapping("/list")
     public String list(@RequestParam(defaultValue = "0") int page, Model model) {
         Page<Club> clubes = clubRepo.findAll(PageRequest.of(page, 5));
@@ -55,7 +55,7 @@ public class ClubController {
         return "club/nuevo";
     }
 
-    // CREAR (Con Log)
+    // CREAR 
     @PostMapping("/crear")
     public String crear(@ModelAttribute Club club) {
         clubRepo.save(club);
