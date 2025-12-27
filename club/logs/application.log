@@ -1,3 +1,7 @@
-2025-12-07T01:43:07.586+01:00  WARN 21992 --- [club] [HikariPool-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=49m9s530ms35µs100ns).
-2025-12-07T05:16:35.010+01:00  WARN 21992 --- [club] [HikariPool-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=3h22s474ms622µs800ns).
-2025-12-07T12:57:55.393+01:00  WARN 21992 --- [club] [HikariPool-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=7h41m25s148ms847µs800ns).
+2025-12-27T11:30:14.814+01:00  INFO 21984 --- [club] [main] com.club.club.ClubApplication            : Starting ClubApplication using Java 21.0.9 with PID 21984 (C:\Users\juanc\OneDrive\2DAW\ENTORNO-SERVIDOR\SPRINGBOOT\ClubRitmica\club\target\classes started by juanc in C:\Users\juanc\OneDrive\2DAW\ENTORNO-SERVIDOR\SPRINGBOOT\ClubRitmica\club)
+2025-12-27T11:30:14.859+01:00  INFO 21984 --- [club] [main] com.club.club.ClubApplication            : No active profile set, falling back to 1 default profile: "default"
+2025-12-27T11:30:18.314+01:00  INFO 21984 --- [club] [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-12-27T11:30:18.622+01:00  INFO 21984 --- [club] [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 259 ms. Found 10 JPA repository interfaces.
+2025-12-27T11:30:20.347+01:00  INFO 21984 --- [club] [main] o.s.boot.tomcat.TomcatWebServer          : Tomcat initialized with port 8080 (http)
+2025-12-27T11:30:20.388+01:00  INFO 21984 --- [club] [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-12-27T11:30:20.389+01:00  INFO 21984 --- [club] [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/11.0.13]
